@@ -1077,7 +1077,8 @@ class PythonSourceView(EditorStyledTextCtrl, PythonStyledTextCtrlMix,
             if self.GetTextRange(linePos, linePos + indentLevel) == indentBlock:
                 self.SetSelection(linePos, linePos + indentLevel)
                 self.ReplaceSelection('')
-                self.SetSelection(selStartPos, selStartPos)
+                newStartPos = selStartPos -indentLevel
+                self.SetSelection(newStartPos, newStartPos)
 
     def OnAddSimpleApp(self, event):
         self.BeginUndoAction()
