@@ -49,6 +49,7 @@ class ModuleModel(SourceModel):
     bitmap = 'Module.png'
     imgIdx = imgModuleModel
     ext = '.py'
+    fileModes = ('r', 'w')
 
     def __init__(self, data, name, editor, saved, app=None):
         self.app = app

@@ -18,6 +18,8 @@
 Handles creation/initialisation of main objects and commandline arguments """
 
 import sys, os, string, time, warnings, datetime
+import traceback
+import faulthandler
 import importlib
 import inspect
 import trace
@@ -25,6 +27,45 @@ from typing import Any, Optional, cast
 
 sys.stdout = sys.__stdout__#open('stdout.txt', 'w')
 sys.stderr = sys.__stderr__#open('stderr.txt', 'w')
+
+
+def _install_crash_logging():
+    """Install traceback/fault handlers so crashes are visible outside wx dialogs."""
+    try:
+        log_path = os.path.join(os.path.dirname(__file__), 'boa-fault.log')
+        log_file = open(log_path, 'a', encoding='utf-8')
+        print('\n=== Boa session start: %s ===' % datetime.datetime.now().isoformat(), file=log_file)
+        log_file.flush()
+
+        # Keep a reference alive for process lifetime.
+        global _boa_fault_log_file
+        _boa_fault_log_file = log_file
+
+        try:
+            faulthandler.enable(file=log_file, all_threads=True)
+        except Exception:
+            # Fallback to stderr if file-backed faulthandler is unavailable.
+            faulthandler.enable(all_threads=True)
+
+    except Exception:
+        # Never fail startup due to diagnostics setup.
+        pass
+
+
+def _global_excepthook(exc_type, exc_value, exc_tb):
+    """Always print uncaught exceptions to stderr and boa-fault.log when available."""
+    traceback.print_exception(exc_type, exc_value, exc_tb, file=sys.__stderr__)
+    log_file = globals().get('_boa_fault_log_file')
+    if log_file is not None:
+        traceback.print_exception(exc_type, exc_value, exc_tb, file=log_file)
+        try:
+            log_file.flush()
+        except Exception:
+            pass
+
+
+_install_crash_logging()
+sys.excepthook = _global_excepthook
 
 #try: import psyco; psyco.full()
 #except ImportError: pass
@@ -535,6 +576,14 @@ class BoaApp(wx.App):
     def __init__(self):
         wx.App.__init__(self, False)
 
+    def OnExceptionInMainLoop(self):
+        """Ensure wx main-loop exceptions surface in terminal/log instead of failing silently."""
+        exc_type, exc_value, exc_tb = sys.exc_info()
+        if exc_type is not None:
+            _global_excepthook(exc_type, exc_value, exc_tb)
+        # Returning False lets wx process the exception normally after logging.
+        return False
+
     def OnInit(self):
         Preferences.initScreenVars()
 
@@ -651,7 +700,13 @@ class BoaApp(wx.App):
 
         if Preferences.logStdStreams:
             sys.stdout = Utils.OutputLoggerPF()
-            sys.excepthook = Utils.wxPyExceptHook
+            previous_hook = _global_excepthook
+
+            def _combined_excepthook(exc_type, exc_value, exc_tb):
+                previous_hook(exc_type, exc_value, exc_tb)
+                Utils.wxPyExceptHook(exc_type, exc_value, exc_tb)
+
+            sys.excepthook = _combined_excepthook
 
         if Preferences.exWorkingDirectory:
             try:
