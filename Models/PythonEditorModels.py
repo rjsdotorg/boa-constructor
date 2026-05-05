@@ -158,7 +158,7 @@ class ModuleModel(SourceModel):
             if self.useInputStream and self.editor.erroutFrm.inputPage:
                 inpLines = StringIO(
                       self.editor.erroutFrm.inputPage.GetValue()).readlines()
-                
+
             start_new_thread(self.runInThread, (filename, args,
                   Preferences.getPythonInterpreterPath(), inpLines,
                   execStart, execFinish))
@@ -180,18 +180,18 @@ class ModuleModel(SourceModel):
             if self.useInputStream and self.editor.erroutFrm.inputPage:
                 inpLines = StringIO(
                       self.editor.erroutFrm.inputPage.GetValue()).readlines()
-                
+
             cwd = os.path.abspath(os.getcwd())
             # cwd1 = "\""+os.path.abspath(os.getcwd())+ "\""
             newCwd = os.path.dirname(os.path.abspath(filename))
             # newCwd = "\""+os.path.dirname(os.path.abspath(filename))+ "\""
             interp = Preferences.getPythonInterpreterPath()
             basename = os.path.basename(filename)
-            
+
             os.chdir(newCwd)
             try:
                 cmd = '"%s" "%s" %s'%(interp, basename, args)
-    
+
                 from ModRunner import wxPopenModuleRunner
 
                 runner = wxPopenModuleRunner(self.editor.erroutFrm, newCwd)
@@ -281,10 +281,12 @@ class ModuleModel(SourceModel):
         cwd = os.path.abspath(os.getcwd())
         os.chdir(profDir)
         try:
-            profCmd = """"%s" -c "import %s;%s.run('execfile('+chr(34)+%s+chr(34)+')', '%s')" """.strip()
+            stmt = 'exec(compile(open(%r, "rb").read(), %r, "exec"))' % (
+                os.path.basename(filename), os.path.basename(filename))
+            profCmd = '"%s" -c "import %s;%s.runctx(%s, globals(), locals(), %s)"'.strip()
 
-            cmd = profCmd % (repr(Preferences.getPythonInterpreterPath())[1:-1], 
-                  prof, prof, repr(os.path.basename(filename)), repr(statFile)[1:-1])
+            cmd = profCmd % (repr(Preferences.getPythonInterpreterPath())[1:-1],
+                  prof, prof, repr(stmt), repr(statFile))
 
             if hasattr(self, 'app'): app = self.app
             else: app = None
@@ -547,18 +549,18 @@ class ModuleModel(SourceModel):
             if report:
                 self.editor.setStatus(_('Could not find %s')%importName, 'Error')
             return False
-        
+
         if f is None:
             return False
-        
+
         f.close()
-        
+
         from . import Controllers
         Model, main = Controllers.identifyFile(fn)
         for ResourceClass in Controllers.resourceClasses:
             if issubclass(Model, ResourceClass):
                 try:
-                    imageMod, rootName, rootMod = self.loadResource(importName, 
+                    imageMod, rootName, rootMod = self.loadResource(importName,
                                                                     searchPath)
                     resources[importName] = imageMod
                     specialAttrs[rootName] = rootMod
@@ -572,7 +574,7 @@ class ModuleModel(SourceModel):
         if report:
             self.editor.setStatus(_('%s is not a valid Resource Module')%importName, 'Error')
         return False
-    
+
     def readResources(self, mod, cls, specialAttrs):
         resources = {}
         searchPath = self.buildResourceSearchList()
@@ -1111,7 +1113,7 @@ class BaseAppModel(ClassModel, ImportRelationshipMix):
 
             if prot == 'zip':
                 return relFilename
-            
+
             normedpath = os.path.normpath(os.path.join(os.path.dirname(appFilename),
                   relFilename))
             if prot == 'file':
@@ -1166,7 +1168,7 @@ class SetupModuleModel(ModuleModel):
     def getPageName(self):
         return 'setup (%s)' % os.path.basename(os.path.dirname(self.filename))
 
-   
+
 ##    def saveAs(self, filename):
 ##        # catch image type changes
 ##        newExt = os.path.splitext(filename)[1].lower()
@@ -1217,7 +1219,7 @@ def identifySource(source):
                 return headerInfo
         else:
             return ModuleModel, ''
-    return ModuleModel, ''    
+    return ModuleModel, ''
 
 
 #-------------------------------------------------------------------------------

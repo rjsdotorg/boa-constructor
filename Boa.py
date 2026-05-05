@@ -19,7 +19,9 @@ Handles creation/initialisation of main objects and commandline arguments """
 
 import sys, os, string, time, warnings, datetime
 import importlib
+import inspect
 import trace
+from typing import Any, Optional, cast
 
 sys.stdout = sys.__stdout__#open('stdout.txt', 'w')
 sys.stderr = sys.__stderr__#open('stderr.txt', 'w')
@@ -54,7 +56,7 @@ def trace_func(frame, event, arg):
               id(frame), event)
 
 
-        if trace.trace_is_on:
+        if getattr(trace, 'trace_is_on', True):
             if trace_save == 'lastline':
                 tracefile.seek(0)
                 print(info)
@@ -63,8 +65,7 @@ def trace_func(frame, event, arg):
     return trace_func
 
 def get_current_frame():
-    try: raise Exception('get_exc_info')
-    except: return sys.exc_info()[2].tb_frame.f_back
+    return inspect.currentframe()
 
 def sendToRunningBoa(names, host='127.0.0.1', port=50007):
     import socket
@@ -106,7 +107,7 @@ def processArgs(argv):
     try:
         optlist, args = getopt.getopt(argv, 'CDTSBERNHVhvO:W:U:',
          ['Constricted', 'Debug', 'Trace', 'StartupFile', 'BlockHomePrefs',
-          'EmptyEditor', 'RemoteDebugServer', 'NoCmdLineTransfer', 'Help', 
+          'EmptyEditor', 'RemoteDebugServer', 'NoCmdLineTransfer', 'Help',
           'Version', 'help', 'version', 'OverridePrefsDirName=', 'WxVersionSelect=',
           'UnicodeEncoding='])
     except getopt.GetoptError as err:
@@ -130,32 +131,35 @@ def processArgs(argv):
             global tracefile
             tracefile = open('Boa.trace', 'wt')
             tracefile.write(os.getcwd()+'\n')
-            trace_func(get_current_frame().f_back, 'call', None)
-            trace_func(get_current_frame(), 'call', None)
+            cur_frame = get_current_frame()
+            back_frame = cast(Any, cur_frame).f_back if cur_frame is not None else None
+            if back_frame is not None:
+                trace_func(back_frame, 'call', None)
+            trace_func(cur_frame, 'call', None)
             if trace_mode == 'functions':
                 sys.setprofile(trace_func)
             elif trace_mode == 'lines':
                 sys.settrace(trace_func)
 
-    
+
         if opt in ('-S', '--StartupFile'):
             _startupfile = startupEnv
-    
+
         if opt in ('-C', '--Constricted'):
             _constricted = 1
-    
+
         if opt in ('-E', '--EmptyEditor'):
             _emptyEditor = 1
-    
+
         if opt in ('-N', '--NoCmdLineTransfer'):
             _blockSocketServer = 1
-        
+
         if opt in ('-W', '--wxVersionSelect', ''):
             _wxVersionSelect = arg
 
         if opt in ('-U', '--UnicodeEncoding', ''):
             _unicodeEncoding = arg
-    
+
         if opt in ('-h', '--help', '-H', '--Help'):
             print('Boa Constructor (%s)'%__version__.version)
             print('Command-line usage: %s [options] [file1] [file2] ...'%main_script)
@@ -193,22 +197,22 @@ def processArgs(argv):
             print('\tSpecify a specific version of wxPython to use.')
             print('-H, --Help, -h, --help:')
             print('\tThis page.')
-    
+
             sys.exit()
-    
+
         if opt in ('-v', '--version', '-V', '--Version'):
             print('Version: %s'%__version__.version)
             sys.exit()
 
     return (_doDebug, _startupfile, _startupModules, _constricted, _emptyEditor,
-            _doRemoteDebugSvr, _blockSocketServer, _wxVersionSelect, 
+            _doRemoteDebugSvr, _blockSocketServer, _wxVersionSelect,
             _unicodeEncoding, optlist, args)
 
 # This happens as early as possible (before wxPython loads) to make filename
 # transfer to a running Boa as quick as possible and little NS pollution
 if __name__ == '__main__' and len(sys.argv) > 1:
     (doDebug, startupfile, startupModules, constricted, emptyEditor, doDebugSvr,
-     blockSocketServer, wxVersionSelect, unicodeEncoding, 
+     blockSocketServer, wxVersionSelect, unicodeEncoding,
      opts, args) = processArgs(sys.argv[1:])
     if doDebugSvr and startupModules:
         print('Running as a Remote Debug Server')
@@ -253,7 +257,7 @@ _unicodeEncoding = 'uft8'
 try:
     # See if there is a multi-version install of wxPython
     if not hasattr(sys, 'frozen'):
-        import wxversion
+        wxversion = importlib.import_module('wxversion')
         if wxVersionSelect is None:
             wxversion.ensureMinimal('4.1')
         else:
@@ -289,7 +293,7 @@ if wxVersion < __version__.wx_version:
 # if __version__.wx_version_max and (wxVersion >= __version__.wx_version_max):
 if __version__.wx_version_max and (wxVersion > __version__.wx_version_max):
     #wx.PySimpleApp()
-    app = wx.App(0)
+    app = wx.App(False)
 
     frame = wx.Frame(None)
     app.SetTopWindow(frame)
@@ -538,8 +542,8 @@ class BoaApp(wx.App):
         self.locale = wx.Locale(Preferences.i18nLanguage)
         wx.Locale.AddCatalogLookupPathPrefix(os.path.join(Preferences.pyPath, 'locale'))
         if hasattr(sys, 'frozen'):
-            self.locale.AddCatalog('wxstd')   
-        self.locale.AddCatalog('boa') 
+            self.locale.AddCatalog('wxstd')
+        self.locale.AddCatalog('boa')
 
         wx.ToolTip.Enable(True)
         if Preferences.debugMode == 'release':
@@ -580,7 +584,7 @@ class BoaApp(wx.App):
                 self.main.componentSB, self, self.main)
             self.SetTopWindow(editor)
 
-            inspector.editor = editor
+            cast(Any, inspector).editor = editor
 
             conf.set('splash', 'modulecount', str(len(sys.modules)))
             try:
@@ -623,8 +627,9 @@ class BoaApp(wx.App):
             if Preferences.suExecPythonStartup and startupEnv:
                 startupfile = startupEnv
 
-            if editor.shell:
-                editor.shell.execStartupScript(startupfile)
+            shell = cast(Any, editor).shell
+            if shell and hasattr(shell, 'execStartupScript'):
+                cast(Any, shell).execStartupScript(startupfile)
 
         finally:
             abt.Destroy()
@@ -632,7 +637,8 @@ class BoaApp(wx.App):
         # Apply command line switches
         if doDebug and startupModules:
             mod = editor.openOrGotoModule(startupModules[0])[0]
-            mod.debug()
+            if mod is not None:
+                cast(Any, mod).debug()
         elif startupModules:
             for mod in startupModules:
                 editor.openOrGotoModule(mod)
@@ -662,7 +668,7 @@ class BoaApp(wx.App):
 
         if wx.Platform == '__WXMSW__':
             self.tbicon = adv.TaskBarIcon()
-            self.tbicon.SetIcon(self.main.GetIcon(), 'Boa Constructor')
+            cast(Any, self.tbicon).SetIcon(self.main.GetIcon(), 'Boa Constructor')
             self.tbicon.Bind(adv.EVT_TASKBAR_LEFT_DCLICK, self.OnTaskBarActivate)
             self.tbicon.Bind(adv.EVT_TASKBAR_RIGHT_UP, self.OnTaskBarMenu)
             self.tbicon.Bind(wx.EVT_MENU, self.OnTaskBarActivate, id=self.TBMENU_RESTORE)
