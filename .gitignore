@@ -5,3 +5,4 @@ App*.py
 notes.txt
 *.pyc
 Config/Explorer.*.*
+*.log

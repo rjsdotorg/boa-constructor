@@ -1017,7 +1017,7 @@ class HelpBookContentsTreeView(wx.TreeCtrl, EditorViews.EditorView):
             self.updateEditor()
 
             tree.SetItemData(item, wx.TreeItemData((page, items, children)))
-                tree.SetItemText(item, title)  # type: ignore[arg-type]
+            tree.SetItemText(item, title)  # type: ignore[arg-type]
 
     def OnDeleteEntry(self, event):
         item = self.GetSelection()

@@ -152,7 +152,7 @@ class STCStyleEditDlg(wx.Dialog):
               label=_('(nothing selected)'), name='styleDefST', parent=self,
               pos=wx.Point(96, 8), size=wx.Size(376, 16),
               style=wx.ST_NO_AUTORESIZE)
-          self.styleDefST.SetFont(wx.Font(self.style_font_size, wx.FONTFAMILY_SWISS,  # type: ignore[attr-defined]
+        self.styleDefST.SetFont(wx.Font(self.style_font_size, wx.FONTFAMILY_SWISS,  # type: ignore[attr-defined]
               wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, ''))  # type: ignore[attr-defined]
         self.styleDefST.SetConstraints(LayoutAnchors(self.styleDefST, True,
               True, True, False))
