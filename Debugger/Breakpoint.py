@@ -52,7 +52,7 @@ class FileBreakpointList:
 
     def addBreakpoint(self, lineno, temp=0, cond='', ignore=0):
         import trace
-        trace.trace_is_on = True
+        trace.trace_is_on = True  # type: ignore[attr-defined]
         newbrk = {'temporary':temp, 'cond':cond, 'enabled':1, 'ignore':ignore}
 
 
@@ -67,7 +67,7 @@ class FileBreakpointList:
         else:
             self.lines[lineno] = linebreaks = [newbrk]
 
-        trace.trace_is_on=False
+        trace.trace_is_on=False  # type: ignore[attr-defined]
 
 
     def deleteBreakpoints(self, lineno):

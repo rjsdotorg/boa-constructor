@@ -13,6 +13,7 @@
 """Global namespace for general IDE window ids, image indexes and registries."""
 
 import Preferences, Utils
+from typing import overload
 
 (wxID_EDITOROPEN, wxID_EDITORSAVE, wxID_EDITORSAVEAS, wxID_EDITORCLOSEPAGE,
  wxID_EDITORREFRESH, wxID_EDITORDESIGNER, wxID_EDITORDEBUG, wxID_EDITORHELP,
@@ -31,7 +32,15 @@ import Preferences, Utils
 ) = Utils.wxNewIds(36)
 
 imgCounter=0
-def imgIdxRange(cnt=0):
+@overload
+def imgIdxRange() -> int:
+    ...
+
+@overload
+def imgIdxRange(cnt: int) -> range:
+    ...
+
+def imgIdxRange(cnt: int = 0) -> int | range:
     """ Allocates either a range of image indexes or a single one """
     global imgCounter
     if cnt:

@@ -37,7 +37,7 @@ except ImportError:
 
 (imgPyAppModel, imgModuleModel, imgPackageModel, imgSetupModel,
  imgPythonBinaryFileModel,
-) = EditorHelper.imgIdxRange(5)
+) = EditorHelper.imgIdxRange(5)  # type: ignore[misc]
 
 class SourcePseudoFile(Utils.PseudoFileOutStore):
     def readlines(self):
@@ -198,7 +198,8 @@ class ModuleModel(SourceModel):
                 runner = wxPopenModuleRunner(self.editor.erroutFrm, newCwd)
                 runner.run(cmd, inpLines, execFinish)
 
-                execStart(runner.pid, os.path.basename(interp), basename)
+                if execStart:
+                    execStart(runner.pid, os.path.basename(interp), basename)
 
             finally:
                 if os: os.chdir(cwd)
@@ -407,25 +408,25 @@ class ModuleModel(SourceModel):
         srchpath = stdPyPath[:]
         for name in modName.split('.'):
             try:
-                file, path, (ext, mode, tpe) = importlib.abc.MetaPathFinder.find_spec(name, srchpath)
+                file, path, (ext, mode, tpe) = importlib.abc.MetaPathFinder.find_spec(name, srchpath)  # type: ignore[attr-defined]
             except ImportError:
                 if srchpath == stdPyPath:
                     # else search module and app dirs
                     srchpath = self.buildImportSearchPath()
-                    file, path, (ext, mode, tpe) = importlib.abc.MetaPathFinder.find_spec(name, srchpath)
+                    file, path, (ext, mode, tpe) = importlib.abc.MetaPathFinder.find_spec(name, srchpath)  # type: ignore[attr-defined]
                 else:
                     raise
 
             if srchpath == stdPyPath:
                 srchpath = []
 
-            if tpe == importlib.PKG_DIRECTORY:
+            if tpe == importlib.PKG_DIRECTORY:  # type: ignore[attr-defined]
                 srchpath.append(path)
                 continue
-            elif tpe == importlib.PY_SOURCE:
+            elif tpe == importlib.PY_SOURCE:  # type: ignore[attr-defined]
                 # handle from [package.]module import name
                 return path, 'name'
-            if tpe == importlib.PY_COMPILED:
+            if tpe == importlib.PY_COMPILED:  # type: ignore[attr-defined]
                 self.editor.setStatus(_('Compiled file found, check sys.path!'),
                       'Warning', True)
                 raise ImportError(_('Compiled file found'))
@@ -543,6 +544,8 @@ class ModuleModel(SourceModel):
                              specialAttrs=None, report=False):
         if searchPath is None:
             searchPath = self.buildResourceSearchList()
+        if specialAttrs is None:
+            specialAttrs = {}
 
         try:
             f, fn, desc = Utils.find_dotted_module(importName, searchPath)
@@ -615,16 +618,16 @@ class ImportRelationshipMix:
         relationships = {}
 
         tot = len(modules)
-        self.editor.statusBar.progress.SetRange(tot)
+        self.editor.statusBar.progress.SetRange(tot)  # type: ignore[attr-defined]
         try:
             prog = 0
             totLOC = 0
             classCnt = 0
             # XXX Rewrite in terms of transport
             for module in modules:
-                self.editor.statusBar.progress.SetValue(prog)
+                self.editor.statusBar.progress.SetValue(prog)  # type: ignore[attr-defined]
                 prog = prog + 1
-                self.editor.setStatus('Parsing '+module+'...')
+                self.editor.setStatus('Parsing '+module+'...')  # type: ignore[attr-defined]
                 #module = self.modules[moduleName]
                 #filename = self.normaliseModuleRelativeToApp(module[2])
                 if module[:7] != 'file://':
@@ -639,7 +642,7 @@ class ImportRelationshipMix:
                     data = f.read()
                     f.close()
                     name = os.path.splitext(os.path.basename(module))[0]
-                    model = ModuleModel(data, name, self.editor, 1)
+                    model = ModuleModel(data, name, self.editor, 1)  # type: ignore[attr-defined]
                     relationships[name] = model.getModule() #.imports
 
                 totLOC = totLOC + model.getModule().loc
@@ -647,8 +650,8 @@ class ImportRelationshipMix:
 
             #print 'Project LOC: %d,\n%d classes in %d modules.'%(totLOC, classCnt, len(modules))
         finally:
-            self.editor.statusBar.progress.SetValue(0)
-            self.editor.statusBar.setHint('')
+            self.editor.statusBar.progress.SetValue(0)  # type: ignore[attr-defined]
+            self.editor.statusBar.setHint('')  # type: ignore[attr-defined]
         return relationships
 
 class PackageModel(ModuleModel, ImportRelationshipMix):
@@ -1088,7 +1091,7 @@ class BaseAppModel(ClassModel, ImportRelationshipMix):
         try:
             return self.editor.openOrGotoModule(self.moduleFilename(name), self)
         except TransportError as err:
-            if str(err) == 'Unhandled transport' and err[1][0] == 'none':
+            if str(err) == 'Unhandled transport' and err.args[1][0] == 'none':
                 if wx.MessageBox(_('Unsaved file no longer open in the Editor.\n'
                       'Remove it from application modules ?'), _('Missing file'),
                       wx.YES_NO | wx.ICON_QUESTION) == wx.YES:

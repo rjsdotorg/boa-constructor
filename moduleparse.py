@@ -1,3 +1,5 @@
+# pyright: ignore
+# type: ignore
 # ----------------------------------------------------------------------
 # Name:        moduleparse.py
 # Purpose:

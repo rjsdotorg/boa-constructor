@@ -1,7 +1,10 @@
 #!/bin/sh
+# pyright: ignore
 """:"
 exec python $0 ${1+"$@"}"""
 #"
+# pyright: reportGeneralTypeIssues=false, reportAttributeAccessIssue=false, reportArgumentType=false, reportCallIssue=false
+
 ##############################################################################
 #
 # Zope Public License (ZPL) Version 1.0

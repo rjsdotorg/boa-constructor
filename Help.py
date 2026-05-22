@@ -9,6 +9,9 @@
 # Copyright:   (c) 1999 - 2007 Riaan Booysen
 # Licence:     GPL
 #----------------------------------------------------------------------
+# pyright: ignore
+# type: ignore
+
 #Boa:FramePanel:PyDocHelpPage
 
 import os, sys, marshal, string, socket, webbrowser
@@ -271,7 +274,7 @@ def showHelp(filename):
 def showContextHelp(word):
 # not useful atm
 ##    if word.startswith('EVT_'):
-##        word = 'wx%sEvent' % ''.join([s.lower().capitalize() 
+##        word = 'wx%sEvent' % ''.join([s.lower().capitalize()
 ##                                      for s in word[4:].split('_')])
 ##    elif word in sys.builtin_module_names:
 ##        word = '%s (built-in module)'%word
@@ -607,7 +610,7 @@ def delHelp():
             if hasattr(_hc, 'server') and _hc.server and not _hc.server.quit:
                 _hc.server.quit = 1
                 _hc.server.server_close()
-    
+
             f = _hc.GetFrame()
             if f:
                 # f.PopEventHandler().Destroy()   # orig

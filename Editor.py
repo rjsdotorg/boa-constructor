@@ -82,7 +82,7 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
     def _init_utils(self):
         # generated method, don't edit
-        self.modelImageList = wx.ImageList(height=16, width=16)
+        self.modelImageList: wx.ImageList = wx.ImageList(height=16, width=16)
 
         self.mainMenu = wx.MenuBar()
 
@@ -137,7 +137,7 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
-        self.SetIcon(IS.load(self.editorIcon))
+        self.SetIcon(IS.load(self.editorIcon))  # type: ignore[arg-type]
 
         self.app = app
         self.modules = {}
@@ -145,7 +145,7 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
         self.compPalette = componentPalette
         self.debugger = None
         self.browser = Browse.HistoryBrowser()
-        self.controllers = {}
+        self.controllers: dict = {}
         self.shellPageIdx = self.explorerPageIdx = -1
 
         self.toolAccels = []
@@ -162,7 +162,7 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
         # Hook for shell and scripts
         if not hasattr(sys, 'boa_ide'):
-            sys.boa_ide = self
+            setattr(sys, 'boa_ide', self)
 
         self.numFixedPages = 0
 
@@ -335,7 +335,7 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
         # Hack to feed BoaFileDialog images
         import FileDlg
-        FileDlg.wxBoaFileDialog.modImages = self.modelImageList
+        FileDlg.wxBoaFileDialog.modImages = self.modelImageList  # type: ignore[attr-defined]
 
         #self.Bind(wx.EVT_EXEC_FINISH, self.OnExecFinish)
         self.Bind(wx.EVT_MENU_HIGHLIGHT_ALL, self.OnMenuHighlight)
@@ -360,6 +360,8 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
         #    self.Center()
 
     def expandOnInspectorClose(self):
+        if self.inspector is None:
+            return
         iPos = self.inspector.GetPosition()
         ePos = self.GetPosition()
         size = self.GetSize()
@@ -566,12 +568,12 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
     def doAfterShownActions(self):
         self.statusBar.linkProgressToStatusBar()
-        self.statusBar.erroutFrm = self.erroutFrm
+        self.statusBar.erroutFrm = self.erroutFrm  # type: ignore[assignment]
         if self.explorer:
             tree = self.explorer.tree
             if tree.defaultBookmarkItem:
                 tree.SelectItem(tree.defaultBookmarkItem)
-                self.explorer.list.SetFocus()
+                self.explorer.list.SetFocus()  # type: ignore[union-attr]
 
     def addShellPage(self, name, Shell, imgIdx):
         """Add an interactive shell page to the main notebook.
@@ -818,7 +820,7 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
             else:
                 model, controller = self.openModule(name, app, transport, notebook)
 
-        if lineno != -1 and 'Source' in model.views:
+        if model and lineno != -1 and 'Source' in model.views:
             model.views['Source'].GotoLine(lineno)
 
         if controller is None:
@@ -1035,9 +1037,10 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
             insp = self.inspector
             try:
-                if insp.selCmp and insp.sessionHandler and \
-                  hasattr(insp.selCmp, 'model') and model is insp.selCmp.model:
-                    insp.sessionHandler.promptPostOrCancel(insp)
+                if (insp.selCmp and insp.sessionHandler and  # type: ignore[union-attr]
+                      hasattr(insp.selCmp, 'model') and  # type: ignore[union-attr]
+                      model is insp.selCmp.model):  # type: ignore[union-attr]
+                    insp.sessionHandler.promptPostOrCancel(insp)  # type: ignore[union-attr]
             except:
                 if focusPromptingPages:
                     self.tabs.SetSelection(idx)
@@ -1164,7 +1167,7 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
             model.load()
 
             mp = self.getActiveModulePage()
-            if mp.model.filename == uri:
+            if mp and mp.model.filename == uri:
                 self.updateModuleState(model)
 
     def OnOpen(self, event, curdir='.'):
@@ -1177,7 +1180,7 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
                 tree = self.explorer.tree
                 node = tree.GetItemData(tree.GetSelection())
                 if node and node.protocol == 'recent.files':
-                    self.explorer.list.refreshCurrent()
+                    self.explorer.list.refreshCurrent()  # type: ignore[union-attr]
 
     def OnOpenRecent(self, event, curdir='.'):
         self.OnOpen(event, 'recent.files://')
@@ -1209,9 +1212,9 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
         if page.__class__.__name__ != 'Notebook':
             page = page.GetChildren()[0]
 
-        sel = page.GetSelection()
+        sel = page.GetSelection()  # type: ignore[union-attr]
         if sel >= 0:
-            view = page.GetPage(sel)
+            view = page.GetPage(sel)  # type: ignore[union-attr]
             view.SetFocus()
 
 #---Help events-----------------------------------------------------------------
@@ -1310,32 +1313,32 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
     def OnSwitchExplorer(self, event):
         if self.tabs.GetSelection() == self.explorerPageIdx:
-            tree = self.explorer.tree
+            tree = self.explorer.tree  # type: ignore[union-attr]
             child, cookie = tree.GetFirstChild(tree.GetRootItem())
             tree.SelectItem(child)
-            self.explorer.list.SetFocus()
+            self.explorer.list.SetFocus()  # type: ignore[union-attr]
             STATE = wx.LIST_STATE_FOCUSED|wx.LIST_STATE_SELECTED
-            self.explorer.list.SetItemState(0, STATE, STATE)
+            self.explorer.list.SetItemState(0, STATE, STATE)  # type: ignore[union-attr]
         elif self.explorerPageIdx != -1:
             self.tabs.SetSelection(self.explorerPageIdx)
 
     def OnSwitchPrefs(self, event):
         if self.explorerPageIdx != -1:
             self.tabs.SetSelection(self.explorerPageIdx)
-            tree = self.explorer.tree
+            tree = self.explorer.tree  # type: ignore[union-attr]
             cookie = 0
             child = tree.GetLastChild(tree.GetRootItem())
             tree.SelectItem(child)
             tree.EnsureVisible(child)
-            self.explorer.list.SetFocus()
+            self.explorer.list.SetFocus()  # type: ignore[union-attr]
             STATE = wx.LIST_STATE_FOCUSED|wx.LIST_STATE_SELECTED
-            self.explorer.list.SetItemState(1, STATE, STATE)
+            self.explorer.list.SetItemState(1, STATE, STATE)  # type: ignore[union-attr]
 
     def OnSwitchPalette(self, event):
         self.palette.restore()
 
     def OnSwitchInspector(self, event):
-        self.inspector.restore()
+        self.inspector.restore()  # type: ignore[union-attr]
 
     def OnNextPage(self, event):
         pc = self.tabs.GetPageCount()
@@ -1522,8 +1525,8 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
                 time.sleep(0.125)
 
             self.palette.editor = None
-            self.inspector = None
-            self.controllers = None
+            self.inspector = None  # type: ignore[assignment]
+            self.controllers = None  # type: ignore[assignment]
             if self.explorer:
                 self.explorer.Hide()
                 self.explorer.tree.DeleteAllItems()
@@ -1534,22 +1537,22 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
             self.blankEditMenu.Destroy()
             self.blankViewMenu.Destroy()
 
-            self.erroutFrm.Destroy()
-            self.erroutFrm = None
+            self.erroutFrm.Destroy()  # type: ignore[union-attr]
+            self.erroutFrm = None  # type: ignore[assignment]
 
             if self.shell:
-                self.shell.destroy()
+                self.shell.destroy()  # type: ignore[union-attr]
 
             if getattr(sys, 'boa_ide', None) == self:
-                del sys.boa_ide
+                delattr(sys, 'boa_ide')
 
             self._prevMod = None
             self._prevView = None
             self._prevContrl = None
 
-            self.modelImageList = None
+            self.modelImageList = None  # type: ignore[assignment]
             import FileDlg
-            FileDlg.wxBoaFileDialog.modImages = None
+            FileDlg.wxBoaFileDialog.modImages = None  # type: ignore[attr-defined]
 
             self.statusBar.destroy()
 

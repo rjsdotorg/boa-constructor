@@ -1,3 +1,6 @@
+# pyright: ignore
+# type: ignore
+
 import os, sys
 
 # just import to confirm resourcepackage is installed

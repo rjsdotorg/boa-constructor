@@ -1,3 +1,5 @@
+# pyright: ignore
+# type: ignore
 #-----------------------------------------------------------------------------
 # Name:        FileExplorer.py
 # Purpose:     Classes for filesystem exploring

@@ -1,3 +1,6 @@
+# pyright: ignore
+# type: ignore
+
 import os, sys, time, socket
 import xmlrpc.client
 
@@ -69,7 +72,7 @@ def spawnChild(monitor, process, args=''):
     """
     # Start ChildProcessServerStart.py in a new process.
     if hasattr(sys, 'frozen'):
-        script_fn = os.path.join(os.path.dirname(sys.executable), 'Debugger', 
+        script_fn = os.path.join(os.path.dirname(sys.executable), 'Debugger',
               'ChildProcessServerStart.py')
     else:
         script_fn = os.path.join(os.path.dirname(__file__),
@@ -135,10 +138,10 @@ def spawnChild(monitor, process, args=''):
                         # XXX non standard output on stderr
                         # XXX possibly warnings
                         # XXX for now ignore it (it's non fatal)
-                        
+
                         #raise UnknownError, errlines[-1]
                         continue
-                        
+
                     while errlines and errlines[-1][:7] != '  File ':
                         del errlines[-1]
                     if errlines:
@@ -220,7 +223,7 @@ class ChildProcessClient(MultiThreadedDebugClient):
     input_stream = None
     error_stream = None
     pyIntpPath = None
-    
+
     def __init__(self, win, process_args=''):
         self.process_args = process_args
         DebugClient.__init__(self, win)

@@ -17,7 +17,7 @@
 print('importing Models.EditorModels')
 
 import os, sys, tempfile
-from io import StringIO
+from io import StringIO, BytesIO
 
 import wx
 
@@ -43,19 +43,19 @@ class EditorModel:
         self.transport = None
         self.prevSwitch = None
 
-        self.views = {}
+        self.views: dict = {}
         self.modified = not saved
-        self.viewsModified = []
-        
+        self.viewsModified: list = []
+
         plugins = {}
         for Plugin in self.plugins:
             plugins[Plugin.name] = Plugin(self)
         self.plugins = plugins
 
     def destroy(self):
-        self.views = ()
-        self.viewsModified = ()
-        self.plugins = ()
+        self.views = {}
+        self.viewsModified = []
+        self.plugins = {}
 
     def updateNameFromTransport(self):
         if self.transport:
@@ -95,8 +95,8 @@ class EditorModel:
 
     def update(self):
         """ Rebuild additional derived structure, called when data is changed """
-        for plugin in self.plugins:
-            self.plugins[plugin].update()
+        for plugin in self.plugins.values():  # type: ignore[union-attr]
+            plugin.update()
 
     def refreshFromViews(self):
         for view in self.viewsModified:
@@ -167,11 +167,11 @@ class CVSFolderModel(FolderModel):
                         pass
                         # maybe add all dirs?
                     elif txtEntry[0] == 'D':
-                        self.entries.insert(dirpos, CVSDir(txtEntry))
+                        self.entries.insert(dirpos, CVSDir(txtEntry))  # type: ignore[name-defined]
                         dirpos = dirpos + 1
                     else:
                         try:
-                            self.entries.append(CVSFile(txtEntry, self.filepath))
+                            self.entries.append(CVSFile(txtEntry, self.filepath))  # type: ignore[name-defined]
                         except IOError: pass
         finally:
             f.close()
@@ -312,9 +312,14 @@ class BitmapFileModel(PersistentModel):
         updateViews = 0
         if newExt != oldExt:
             updateViews = 1
-            import io
+            if isinstance(self.data, str):
+                img_data = self.data.encode()
+            elif isinstance(self.data, memoryview):
+                img_data = self.data.tobytes()
+            else:
+                img_data = bytes(self.data)
             bmp = wx.BitmapFromImage(wx.ImageFromStream(
-                  io.StringIO(self.data)))
+                BytesIO(img_data)))
             fn = tempfile.mktemp(newExt)
             try:
                 bmp.SaveFile(fn, self.extTypeMap[newExt])

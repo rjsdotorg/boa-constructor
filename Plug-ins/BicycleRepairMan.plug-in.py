@@ -20,10 +20,10 @@ This is exposed as editor.brm_context.
 
 Also clearing the current context can be called from the Explorer menu."""
 
-import os, linecache, traceback
-from thread import start_new_thread
+import os, sys, linecache, traceback
+from _thread import start_new_thread
 
-import bike
+import bike  # type: ignore[import-not-found]
 
 import wx
 
@@ -35,7 +35,7 @@ from Models import PythonEditorModels, PythonControllers
 from Explorers import ExplorerNodes, FileExplorer
 import ErrorStack, Editor
 
-Editor.EditorFrame.brm_context = None
+Editor.EditorFrame.brm_context = None  # type: ignore[attr-defined]
 
 # Issues
 # * On Windows filenames aren't guaranteed to always match those in the Editor
@@ -58,7 +58,7 @@ Plugins.registerPreference('BicycleRepairMan', 'brmProgressLogger',
 
 class CancelOperation(Exception): pass
 
-from bike.query.findReferences import CouldntFindDefinitionException
+from bike.query.findReferences import CouldntFindDefinitionException  # type: ignore[import-not-found]
 class BRMViewPlugin:
     """ Plugin class for View classes that exposes the refactoring API.
 
@@ -84,7 +84,7 @@ class BRMViewPlugin:
     def prepareForSelectOperation(self):
         selection = self.view.GetSelectedText().strip()
         if not selection:
-            raise Exception, _('No text selected.')
+            raise Exception(_('No text selected.'))
 
         ctx = self.model.editor.brm_context
         filename = self.model.checkLocalFile()
@@ -133,13 +133,13 @@ class BRMViewPlugin:
     def getExtractionInfo(self, xtype, caption):
         selection = self.view.GetSelectedText().strip()
         if not selection:
-            raise CancelOperation, \
-                  _('No text selected. Highlight the region you want to extract.')
+            raise CancelOperation(
+                  _('No text selected. Highlight the region you want to extract.'))
 
         filename = self.model.checkLocalFile()
         name = wx.GetTextFromUser(_('New %s name:')%xtype, caption)
         if not name:
-            raise CancelOperation, _('Empty names are invalid.')
+            raise CancelOperation(_('Empty names are invalid.'))
 
         startpos, endpos = self.view.GetSelection()
         startline = self.view.LineFromPosition(startpos)
@@ -163,7 +163,7 @@ class BRMViewPlugin:
               for ref in ctx.findReferencesByCoordinates(fname, lineno, column)]
         except CouldntFindDefinitionException:
             wx.CallAfter(self.findReferencesFindDefinition)
-        except Exception, err:
+        except Exception as err:
             wx.CallAfter(wx.LogError,
                            ''.join(traceback.format_exception(*sys.exc_info())))
             wx.CallAfter(self.model.editor.setStatus,
@@ -208,7 +208,7 @@ class BRMViewPlugin:
             defs = ctx.findDefinitionByCoordinates(filename, lineno, column)
             if defs:
                 try:
-                    match = defs.next()
+                    match = next(defs)
                 except StopIteration:
                     wx.CallAfter(wx.LogError, _("Couldn't find definition"))
                     wx.CallAfter(self.model.editor.setStatus,
@@ -219,8 +219,8 @@ class BRMViewPlugin:
                 wx.CallAfter(wx.LogError, _("Couldn't find definition"))
                 wx.CallAfter(self.model.editor.setStatus,
                                _('BRM - Could not find definition'), 'Error')
-                
-        except Exception, err:
+
+        except Exception as err:
             wx.CallAfter(wx.LogError,
                            ''.join(traceback.format_exception(*sys.exc_info())))
             wx.CallAfter(self.model.editor.setStatus,
@@ -283,7 +283,7 @@ class BRMViewPlugin:
         ctx = self.model.editor.brm_context
         try:
             ctx.extractMethod(*self.getExtractionInfo('Method', _('Extract method')))
-        except CancelOperation, err:
+        except CancelOperation as err:
             wx.LogError(str(err))
         else:
             self.view.SetSelectionEnd(self.view.GetSelectionStart())
@@ -292,7 +292,7 @@ class BRMViewPlugin:
     def OnUndoLast(self, event):
         try:
             self.model.editor.brm_context.undo()
-        except bike.UndoStackEmptyException, msg:
+        except bike.UndoStackEmptyException as msg:
             wx.LogWarning(_('Nothing to undo, the undo stack is empty.'))
         else:
             self.saveAndRefresh()
@@ -305,7 +305,7 @@ class BRMViewPlugin:
         try:
             filename, startline, startcol, endline, endcol, variablename = \
                   self.getExtractionInfo('Variable', _('Extract variable'))
-        except CancelOperation, err:
+        except CancelOperation as err:
             wx.LogError(str(err))
         else:
             ctx.extractLocalVariable(filename, startline, startcol, endline,
@@ -327,10 +327,10 @@ class BRMViewPlugin:
         ctx, sel, filename, lineno, column = self.prepareForSelectOperation()
 
         wx.LogMessage(
-           `ctx.getTypeOfExpression(filename, lineno, column, column+len(sel))`)
+           repr(ctx.getTypeOfExpression(filename, lineno, column, column+len(sel))))
 
 
-PySourceView.PythonSourceView.plugins += (BRMViewPlugin,)
+PySourceView.PythonSourceView.plugins += (BRMViewPlugin,)  # type: ignore[operator,assignment]
 
 
 ##class BRMControllerPlugin:
@@ -364,12 +364,12 @@ class BRMModelPlugin:
         if not hasattr(model.editor, 'brm_context') or model.editor.brm_context is None:
             model.editor.brm_context = context = bike.init()
             context.setProgressLogger(
-                  globals()[Preferences.brmProgressLogger](model.editor))
+                globals()[Preferences.brmProgressLogger](model.editor))  # type: ignore[attr-defined]
 
     def update(self):
         pass
 
-PythonEditorModels.ModuleModel.plugins += (BRMModelPlugin,)
+PythonEditorModels.ModuleModel.plugins += (BRMModelPlugin,)  # type: ignore[operator,assignment]
 
 
 #-------------------------------------------------------------------------------

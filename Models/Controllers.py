@@ -139,7 +139,7 @@ class PersistentController(EditorController):
                 (_('NDiff files...'), self.OnNDiffFile, '-', '')]
 
     def createModel(self, source, filename, main, saved, modelParent=None):
-        return self.Model(source, filename, self.editor, saved)
+        return self.Model(source, filename, self.editor, saved)  # type: ignore[operator]
 
     def createNewModel(self, modelParent=None):
         name = self.editor.getValidName(self.Model)
@@ -268,7 +268,7 @@ class TextController(PersistentController):
 class UndockedController(BaseEditorController):
     docked          = False
     def createModel(self, source, filename, main, saved, modelParent=None):
-        return self.Model(source, filename, self.editor, saved)
+        return self.Model(source, filename, self.editor, saved)  # type: ignore[operator]
 
     def display(self, model):
         """ Override to display undocked interface """

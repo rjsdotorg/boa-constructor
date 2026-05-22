@@ -19,13 +19,13 @@ import Plugins
 import sourceconst
 from Models import PythonEditorModels, PythonControllers, EditorHelper, Controllers
 
-EditorHelper.imgLinkAppModel = EditorHelper.imgIdxRange()
+EditorHelper.imgLinkAppModel = EditorHelper.imgIdxRange()  # type: ignore[attr-defined]
 
 class LinkAppModel(PythonEditorModels.PyAppModel):
     modelIdentifier = 'LinkApp'
     defaultName = 'LinkApp'
     bitmap = 'LinkApp_s.png'
-    imgIdx = EditorHelper.imgLinkAppModel
+    imgIdx = EditorHelper.imgLinkAppModel  # type: ignore[attr-defined]
 
 #    def getDefaultData(self):
 #        return sourceconst.defSig %{'modelIdent':self.modelIdentifier, 'main': ''}
@@ -55,7 +55,7 @@ class LinkAppModel(PythonEditorModels.PyAppModel):
             app.debug(params, cont_if_running, cont_always, temp_breakpoint)
         else:
             wx.LogWarning('No Application module found in modules list to link to')
-                
+
 
 class LinkAppController(PythonControllers.BaseAppController):
     Model = LinkAppModel

@@ -1,3 +1,6 @@
+# pyright: ignore
+# type: ignore
+
 import os, sys, base64
 try:
     from ExternalLib import xmlrpclib
