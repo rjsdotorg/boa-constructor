@@ -16,7 +16,7 @@ print('importing Palette')
 import sys
 
 import wx
-# import wx.html2
+import wx.html2
 import webbrowser
 
 import PaletteStore
@@ -29,10 +29,10 @@ import wx.lib.buttons
 currentMouseOverTip = ''
 
 
-[wxID_BOAFRAME, wxID_BOAFRAMEPALETTE, wxID_BOAFRAMETOOLBAR, 
+[wxID_BOAFRAME, wxID_BOAFRAMEPALETTE, wxID_BOAFRAMETOOLBAR,
 ] = [wx.NewIdRef() for _init_ctrls in range(3)]
 
-[wxID_BOAFRAMETOOLBARTOOLS0, wxID_BOAFRAMETOOLBARTOOLS1, 
+[wxID_BOAFRAMETOOLBARTOOLS0, wxID_BOAFRAMETOOLBARTOOLS1,
 ] = [wx.NewIdRef() for _init_coll_toolBar_Tools in range(2)]
 
 class MyBrowser(wx.Frame):
@@ -42,7 +42,7 @@ class MyBrowser(wx.Frame):
         self.browser = wx.html2.WebView.New(self)
         sizer.Add(self.browser, 1, wx.EXPAND, 10)
         self.SetSizer(sizer)
-        self.SetSize((700, 700))
+        self.SetSize(700, 700)
 
 class MyZipBrowser(wx.Frame):
     def __init__(self, *args, **kwds):
@@ -51,7 +51,7 @@ class MyZipBrowser(wx.Frame):
         self.browser = wx.html2.WebView.New(self)
         sizer.Add(self.browser, 1, wx.EXPAND, 10)
         self.SetSizer(sizer)
-        self.SetSize((700, 700))
+        self.SetSize(700, 700)
 
 class BoaFrame(wx.Frame, Utils.FrameRestorerMixin):
 
@@ -211,7 +211,7 @@ class BoaFrame(wx.Frame, Utils.FrameRestorerMixin):
 ##                          self.OnDialogPaletteClick, None, None,
 ##                          wx.lib.buttons.GenBitmapButton)
 ##                self.palettePages.append(self.dialogPalettePage)
-##                if mb: mb.Append(menu=self.dialogPalettePage.menu, 
+##                if mb: mb.Append(menu=self.dialogPalettePage.menu,
 ##                                 title=PaletteStore.dialogPalette[0])
 
             # Zope page
@@ -222,7 +222,7 @@ class BoaFrame(wx.Frame, Utils.FrameRestorerMixin):
                 self.zopePalettePage.addToggleBitmaps(
                       PaletteStore.zopePalette[2], None, None)
                 self.palettePages.append(self.zopePalettePage)
-                if mb: mb.Append(menu=self.zopePalettePage.menu, 
+                if mb: mb.Append(menu=self.zopePalettePage.menu,
                                  title=PaletteStore.zopePalette[0])
         else:
             palettePage = None
@@ -437,7 +437,7 @@ class PanelPalettePage(wx.Panel, BasePalettePage):
             if self.palette.paletteStyle == 'tabs':
                 self.menu.Destroy()
 
-    def addButton(self, widgetName, wxClass, constrClass, clickEvt, hintFunc, 
+    def addButton(self, widgetName, wxClass, constrClass, clickEvt, hintFunc,
                   hintLeaveFunc, btnType):
         mID = wx.NewIdRef()
 
@@ -476,21 +476,21 @@ class PanelPalettePage(wx.Panel, BasePalettePage):
 
 class NewPalettePage(PanelPalettePage):
     def __init__(self, parent, name, bitmapPath, eventOwner, widgets, palette):
-        PanelPalettePage.__init__(self, parent, name, bitmapPath, eventOwner, 
+        PanelPalettePage.__init__(self, parent, name, bitmapPath, eventOwner,
                                   widgets, palette, palette)
         self.selection = None
 
     def destroy(self):
         PanelPalettePage.destroy(self)
 
-    def addButton(self, widgetName, wxClass, constrClass, clickEvt, hintFunc, 
+    def addButton(self, widgetName, wxClass, constrClass, clickEvt, hintFunc,
                   hintLeaveFunc, btnType):
-        mID = PanelPalettePage.addButton(self, widgetName, wxClass, constrClass, 
+        mID = PanelPalettePage.addButton(self, widgetName, wxClass, constrClass,
               clickEvt, hintFunc, hintLeaveFunc, btnType)
         return mID
 
     def addButton2(self, name, Controller, btnType):
-        mID = PanelPalettePage.addButton(self, name, Controller, None, 
+        mID = PanelPalettePage.addButton(self, name, Controller, None,
               self.OnClickTrap, None, None, btnType)
         self.palette.editor.Bind(wx.EVT_MENU, self.OnClickTrap, id=mID)
 
@@ -508,9 +508,9 @@ class NewPalettePage(PanelPalettePage):
               controller=modPageInfo[1])
 
 class PalettePage(PanelPalettePage):
-    def __init__(self, parent, name, bitmapPath, eventOwner, widgets, 
+    def __init__(self, parent, name, bitmapPath, eventOwner, widgets,
                  components, palette):
-        PanelPalettePage.__init__(self, parent, name, bitmapPath, eventOwner, 
+        PanelPalettePage.__init__(self, parent, name, bitmapPath, eventOwner,
               widgets, components, palette)
         self.clickEvt = None
         self.selection = None
@@ -519,7 +519,7 @@ class PalettePage(PanelPalettePage):
     def addToggleBitmaps(self, classes, hintFunc, hintLeaveFunc):
         for wxClass in classes:
             ci = PaletteStore.compInfo[wxClass]
-            self.addButton(ci[0], wxClass, ci[1], self.OnClickTrap, hintFunc, 
+            self.addButton(ci[0], wxClass, ci[1], self.OnClickTrap, hintFunc,
                   hintLeaveFunc, wx.lib.buttons.GenBitmapToggleButton)
 
     def OnClickTrap(self, event):
@@ -571,6 +571,6 @@ if __name__ == '__main__':
     palette = BoaFrame(None, -1, app)
     palette.Show()
     palette.palette.AddPage(wx.Panel(palette.palette, -1), 'test')
-    
+
 
     app.MainLoop()
