@@ -10,7 +10,7 @@
 # Licence:     GPL
 #-----------------------------------------------------------------------------
 
-""" Global namespace for general IDE window ids, image indexes and registries """
+"""Global namespace for general IDE window ids, image indexes and registries."""
 
 import Preferences, Utils
 

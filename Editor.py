@@ -12,8 +12,7 @@
 #----------------------------------------------------------------------
 #Boa:Frame:EditorFrame
 
-""" The main IDE frame containing the Shell, Explorer and the ability to host
-Models and their Views on ModulePages"""
+"""Main IDE frame and host for models and views on module pages."""
 
 print('importing Editor')
 
@@ -47,12 +46,12 @@ class CancelClose(Exception): pass
 
 (mmFile, mmEdit, mmViews, mmWindows, mmHelp) = list(range(5))
 
-[wxID_EDITORFRAME, wxID_EDITORFRAMESTATUSBAR, wxID_EDITORFRAMETABS, 
- wxID_EDITORFRAMETABSSPLITTER, wxID_EDITORFRAMETOOLBAR, 
+[wxID_EDITORFRAME, wxID_EDITORFRAMESTATUSBAR, wxID_EDITORFRAMETABS,
+ wxID_EDITORFRAMETABSSPLITTER, wxID_EDITORFRAMETOOLBAR,
 ] = [wx.NewIdRef(count=1) for _init_ctrls in range(5)]
 
 class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
-    """ Source code editor and host for the Model/View/Controller classes"""
+    """Source code editor and host for Model/View/Controller classes."""
 
     editorTitle = _('Editor')
     editorIcon = 'Images/Icons/Editor.ico'
@@ -355,7 +354,7 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
     def setDefaultDimensions(self):
         self.SetSize(Preferences.inspWidth + Preferences.windowManagerSide*2 +\
-              Preferences.screenX, Preferences.underPalette + Preferences.screenY, 
+              Preferences.screenX, Preferences.underPalette + Preferences.screenY,
               Preferences.edWidth, Preferences.bottomHeight)
         #if not self.palette.IsShown():
         #    self.Center()
@@ -408,7 +407,7 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
         for idx in imgIdxs:
             try:
                 midx = self.modelImageList.Add(IS.load(allImages[idx]))
-            except IS.Error: 
+            except IS.Error:
                 midx = -1
             if idx != midx:
                 print('Image index mismatch', idx, midx, allImages[idx])
@@ -416,7 +415,13 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
         self.tabs.SetImageList(self.modelImageList)
 
     def setupToolBar(self, modelIdx=None, viewIdx=None, force=False):
-        """ Build toolbar and menus based on currently active IDE selection """
+        """Build toolbar and menus for the active IDE selection.
+
+        Args:
+            modelIdx (int | None): Optional module page index to resolve active state.
+            viewIdx (int | None): Optional view index used by active page logic.
+            force (bool): When True, update even if palette is being destroyed.
+        """
         if not self._created or self._blockToolbar:
             return
 
@@ -569,7 +574,16 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
                 self.explorer.list.SetFocus()
 
     def addShellPage(self, name, Shell, imgIdx):
-        """ Adds the interactive interpreter to the editor """
+        """Add an interactive shell page to the main notebook.
+
+        Args:
+            name (str): Tab caption for the shell page.
+            Shell (type): Shell widget class to instantiate.
+            imgIdx (int): Image-list index for the tab icon.
+
+        Returns:
+            tuple: ``(shellEdit, pageIndex)`` for the created shell and tab.
+        """
         if wx.Platform == '__WXGTK__':
             # A panel between the STC and notebook reduces flicker
             tabPage, shellEdit = \
@@ -735,7 +749,11 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
         return model
 
     def getAppModules(self):
-        """ Return a list of all open Application modules """
+        """Return all open models registered as application modules.
+
+        Returns:
+            list: Open model instances whose identifiers are app model IDs.
+        """
         apps = []
         for modPage in list(self.modules.values()):
             if modPage.model.modelIdentifier in Controllers.appModelIdReg:
@@ -754,11 +772,19 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
 #---Opening and closing items in the IDE----------------------------------------
     def openOrGotoModule(self, name, app=None, transport=None, notebook=None):
-        """ Main entrypoint to open a file in the editor.
+        """Open a module or focus an already-open module.
 
-        Defaults to 'file' if no protocol given.
-        Optionally handles <filename>::<lineno> format to start on a given line
-        Case insensitively find model if already open.
+        If no protocol is provided, defaults to ``file://``. Supports
+        ``<filename>::<lineno>`` to jump to a source line after opening.
+
+        Args:
+            name (str): URI or path to open, optionally with ``::lineno`` suffix.
+            app: Reserved for compatibility; currently ignored.
+            transport: Optional pre-resolved transport to use for loading.
+            notebook: Optional target notebook when opening in alternate hosts.
+
+        Returns:
+            tuple: ``(model, controller)`` for the resolved/opened module.
         """
 
         app = None
@@ -810,9 +836,16 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
         return model, controller
 
     def openModule(self, filename, app=None, transport=None, notebook=None):
-        """ Open a Model in the IDE.
+        """Open a model in the IDE from a URI.
 
-        Filename must be a valid URI.
+        Args:
+            filename (str): Resource URI to open.
+            app: Optional application model used by controller logic.
+            transport: Optional transport instance; auto-resolved when omitted.
+            notebook: Optional target notebook for created module pages.
+
+        Returns:
+            tuple: ``(model, controller)`` for the opened module.
         """
         # Get transport based on filename
         prot, category, respath, filename = Explorer.splitURI(filename)
@@ -1052,8 +1085,10 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
         self.updateTitle(pageIdx)
 
     def updateTitle(self, pageIdx = None):
-        """ Updates the title of the Editor to reflect changes in selection,
-            filename or model state.
+        """Update editor window title from current selection and model state.
+
+        Args:
+            pageIdx (int | None): Optional page index to title from.
         """
 
         # XXX Do decorations here
@@ -1318,8 +1353,10 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
 #---Code Browsing---------------------------------------------------------------
     def addBrowseMarker(self, marker):
-        """ Add marker to browse stack associated with the currently open module
-            and view
+        """Add a marker for the active module/view to the browse history.
+
+        Args:
+            marker: View-specific browse marker payload.
         """
         modulePage = self.getActiveModulePage()
         if modulePage:

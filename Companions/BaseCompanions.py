@@ -11,10 +11,10 @@
 # Licence:     GPL
 #-------------------------------------------------------------------------------
 
-""" Classes that 'shadow' controls.
+"""Classes that 'shadow' controls.
 
 They implement design time behaviour and interfaces. Also used for inspectable
-objects """
+objects"""
 
 print('importing Companions')
 

@@ -1,0 +1,26 @@
+﻿reading user preferences
+collection methods: ['_init_coll_menuBar_Menus', '_init_coll_fileMenu_Items', '_init_coll_helpMenu_Items', '_init_coll_statusBar_Fields', '_init_coll_pathsSizer_Items', '_init_coll_filesSizer_Items', '_init_coll_boolGridSizer_Items', '_init_coll_boolSizer_Items', '_init_coll_numericGridSizer_Items', '_init_coll_numericSizer_Items', '_init_coll_otherSizer_Items', '_init_coll_actionsSizer_Items', '_init_coll_mainSizer_Items', '_init_coll_configBook_Pages', '_init_utils', '_init_sizers', '_init_ctrls']
+
+_init_coll_menuBar_Menus: creators=2 unmatched=0
+_init_coll_fileMenu_Items: creators=4 unmatched=0
+_init_coll_helpMenu_Items: creators=1 unmatched=0
+_init_coll_statusBar_Fields: creators=3 unmatched=0
+_init_coll_pathsSizer_Items: creators=5 unmatched=0
+_init_coll_filesSizer_Items: creators=7 unmatched=0
+_init_coll_boolGridSizer_Items: creators=22 unmatched=0
+_init_coll_boolSizer_Items: creators=1 unmatched=0
+_init_coll_numericGridSizer_Items: creators=20 unmatched=0
+_init_coll_numericSizer_Items: creators=1 unmatched=0
+_init_coll_otherSizer_Items: creators=4 unmatched=0
+_init_coll_actionsSizer_Items: creators=3 unmatched=0
+_init_coll_mainSizer_Items: creators=3 unmatched=0
+_init_coll_configBook_Pages: creators=5 unmatched=0
+_init_utils: creators=3 unmatched=0
+_init_sizers: creators=21 unmatched=0
+_init_ctrls: creators=87 unmatched=0
+
+--- readSpecialAttrs test ---
+Found _init_ctrls call at line 773: 'self._init_ctrls(parent)'
+
+--- window ID regex test ---
+  line 102: match=False  '] = [wx.NewIdRef(count=1) for _init_ctrls in range(63)]'

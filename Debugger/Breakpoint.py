@@ -1,7 +1,5 @@
-"""
-Provides a breakpoint registry that can be sent to another process (via
-getBreakpointList()).
-"""
+"""Provides a breakpoint registry that can be sent to another process (via
+getBreakpointList())."""
 
 import os
 # import trace

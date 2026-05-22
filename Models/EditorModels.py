@@ -11,8 +11,8 @@
 # Licence:     GPL
 #----------------------------------------------------------------------
 
-""" The model classes represent different types of source code files,
-    Different views can be connected to a model  """
+"""The model classes represent different types of source code files,
+    Different views can be connected to a model"""
 
 print('importing Models.EditorModels')
 

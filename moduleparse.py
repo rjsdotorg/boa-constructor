@@ -22,8 +22,7 @@ Nested methods and classes not handled
 Continuation lines are not dealt with at all and strings may confuse
 the hell out of the parser, but it usually works.
 
-Continuation lines are now handled for class, method and function defs
-"""
+Continuation lines are now handled for class, method and function defs"""
 
 # XXX Dedented block (0 indent) should trigger end of class/func
 

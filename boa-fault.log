@@ -1,0 +1,457 @@
+
+=== Boa session start: 2026-05-05T13:20:04.278200 ===
+
+=== Boa session start: 2026-05-05T13:20:19.372969 ===
+
+=== Boa session start: 2026-05-05T13:21:53.413583 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonEditorModels.py", line 128, in readDesignerMethod
+    inits, body, fins = res[:3]
+    ^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 3, got 2)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 115, in showDesigner
+    model.readComponents()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonEditorModels.py", line 339, in readComponents
+    self.objectCollections[oc] = self.readDesignerMethod(oc, codeBody)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonEditorModels.py", line 130, in readDesignerMethod
+    raise Exception(_('Collection body %s not in init, body, fin form') % meth)
+Exception: Collection body _init_coll_statusBar_Fields not in init, body, fin form
+Windows fatal exception: access violation
+
+Thread 0x000018b8 (most recent call first):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\EditorUtils.py", line 522 in run
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1075 in _bootstrap_inner
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1032 in _bootstrap
+
+Current thread 0x00000348 (most recent call first):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Utils.py", line 956 in wxPyExceptHook
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\boa.py", line 707 in _combined_excepthook
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\site-packages\wx\core.py", line 2254 in MainLoop
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\boa.py", line 793 in main
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\boa.py", line 806 in <module>
+
+=== Boa session start: 2026-05-05T13:24:31.743413 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 200, in initObjProps
+    value = PaletteMapping.evalCtrl(prop.params[0],
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\PaletteMapping.py", line 156, in evalCtrl
+    return eval(expr, globals(), localsDct)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <module>
+AttributeError: '_your_frame_attrs_' object has no attribute 'filesPathLabel'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 157, in showDesigner
+    sizersView.initialize()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 74, in initialize
+    self.initObjectsAndCompanions(objCol.creators, objCol, deps, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\SizersView.py", line 118, in initObjectsAndCompanions
+    DataView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 77, in initObjectsAndCompanions
+    InspectableObjectView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 129, in initObjectsAndCompanions
+    self.initObjProps(objColl.propertiesByName, constr.comp_name, constr,
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 203, in initObjProps
+    value = PaletteMapping.evalCtrl(prop.params[0],
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\PaletteMapping.py", line 156, in evalCtrl
+    return eval(expr, globals(), localsDct)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <module>
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 1528, in __getattr__
+    if isinstance(obj[1], wx._core._wxPyDeadObject):
+                          ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'wx._core' has no attribute '_wxPyDeadObject'
+
+=== Boa session start: 2026-05-05T13:27:51.101372 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 157, in showDesigner
+    sizersView.initialize()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 74, in initialize
+    self.initObjectsAndCompanions(objCol.creators, objCol, deps, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\SizersView.py", line 118, in initObjectsAndCompanions
+    DataView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 77, in initObjectsAndCompanions
+    InspectableObjectView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 129, in initObjectsAndCompanions
+    self.initObjProps(objColl.propertiesByName, constr.comp_name, constr,
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 215, in initObjProps
+    comp.setProps(props[name])
+                        ^^^^
+UnboundLocalError: cannot access local variable 'name' where it is not associated with a value
+
+=== Boa session start: 2026-05-05T13:29:35.309393 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\boa.py", line 620, in OnInit
+    import PaletteMapping
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\PaletteMapping.py", line 71, in <module>
+    import Models.wxPythonControllers
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 26, in <module>
+    from Views import EditorViews, AppViews, Designer, DataView, SizersView
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 26, in <module>
+    from .InspectableViews import InspectableObjectView
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 202
+    except AttributeError as error:
+IndentationError: unexpected indent
+
+=== Boa session start: 2026-05-05T13:29:58.971506 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 157, in showDesigner
+    sizersView.initialize()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 74, in initialize
+    self.initObjectsAndCompanions(objCol.creators, objCol, deps, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\SizersView.py", line 118, in initObjectsAndCompanions
+    DataView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 77, in initObjectsAndCompanions
+    InspectableObjectView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 129, in initObjectsAndCompanions
+    self.initObjProps(objColl.propertiesByName, constr.comp_name, constr,
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 200, in initObjProps
+    value = PaletteMapping.evalCtrl(prop.params[0],
+                                    ~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+=== Boa session start: 2026-05-05T13:30:20.256629 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 157, in showDesigner
+    sizersView.initialize()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 74, in initialize
+    self.initObjectsAndCompanions(objCol.creators, objCol, deps, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\SizersView.py", line 118, in initObjectsAndCompanions
+    DataView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 77, in initObjectsAndCompanions
+    InspectableObjectView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 129, in initObjectsAndCompanions
+    self.initObjProps(objColl.propertiesByName, constr.comp_name, constr,
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 200, in initObjProps
+    value = PaletteMapping.evalCtrl(prop.params[0],
+                                    ~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+=== Boa session start: 2026-05-05T13:31:43.963172 ===
+
+=== Boa session start: 2026-05-05T13:36:00.164715 ===
+
+=== Boa session start: 2026-05-05T13:37:31.637438 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 143, in showDesigner
+    designer.refreshCtrl()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 399, in refreshCtrl
+    self.initObjectsAndCompanions(objCol.creators[1:], objCol, deps, depLnks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 131, in initObjectsAndCompanions
+    self.initObjColls(objColl.collectionsByName, constr.comp_name, constr,
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 237, in initObjColls
+    self.addCollView(name, collInit.method, False)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 267, in addCollView
+    collComp.setConstrs(collInit.creators, collInit.initialisers,
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\ContainerCompanions.py", line 1113, in setConstrs
+    self.control.SetFieldsCount(len(self.widths))
+wx._core.wxAssertionError: C++ assertion ""number > 0"" failed at ..\..\src\common\statbar.cpp(136) in wxStatusBarBase::SetFieldsCount(): invalid field number in SetFieldsCount
+
+=== Boa session start: 2026-05-05T13:44:33.973502 ===
+
+=== Boa session start: 2026-05-05T13:45:13.443078 ===
+
+=== Boa session start: 2026-05-05T17:43:19.662009 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 1138, in OnCloseWindow
+    self.refreshModel()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 443, in refreshModel
+    self.sizersView.saveCtrls([], module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\SizersView.py", line 84, in saveCtrls
+    DataView.saveCtrls(self, definedCtrls, module, collDeps=collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 119, in saveCtrls
+    InspectableObjectView.saveCtrls(self, definedCtrls, module, collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 421, in saveCtrls
+    collView.saveCtrls(module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\CollectionEdit.py", line 366, in saveCtrls
+    self.companion.writeCollectionItems(newBody)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\SizerCompanions.py", line 331, in writeCollectionItems
+    if constr.params[0] == 'None':
+       ~~~~~~~~~~~~~^^^
+KeyError: 0
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 1138, in OnCloseWindow
+    self.refreshModel()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 443, in refreshModel
+    self.sizersView.saveCtrls([], module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\SizersView.py", line 84, in saveCtrls
+    DataView.saveCtrls(self, definedCtrls, module, collDeps=collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 119, in saveCtrls
+    InspectableObjectView.saveCtrls(self, definedCtrls, module, collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 421, in saveCtrls
+    collView.saveCtrls(module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\CollectionEdit.py", line 366, in saveCtrls
+    self.companion.writeCollectionItems(newBody)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\SizerCompanions.py", line 331, in writeCollectionItems
+    if constr.params[0] == 'None':
+       ~~~~~~~~~~~~~^^^
+KeyError: 0
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 1138, in OnCloseWindow
+    self.refreshModel()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 443, in refreshModel
+    self.sizersView.saveCtrls([], module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\SizersView.py", line 84, in saveCtrls
+    DataView.saveCtrls(self, definedCtrls, module, collDeps=collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 119, in saveCtrls
+    InspectableObjectView.saveCtrls(self, definedCtrls, module, collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 421, in saveCtrls
+    collView.saveCtrls(module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\CollectionEdit.py", line 366, in saveCtrls
+    self.companion.writeCollectionItems(newBody)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\SizerCompanions.py", line 331, in writeCollectionItems
+    if constr.params[0] == 'None':
+       ~~~~~~~~~~~~~^^^
+KeyError: 0
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 1138, in OnCloseWindow
+    self.refreshModel()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 443, in refreshModel
+    self.sizersView.saveCtrls([], module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\SizersView.py", line 84, in saveCtrls
+    DataView.saveCtrls(self, definedCtrls, module, collDeps=collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 119, in saveCtrls
+    InspectableObjectView.saveCtrls(self, definedCtrls, module, collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 421, in saveCtrls
+    collView.saveCtrls(module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\CollectionEdit.py", line 366, in saveCtrls
+    self.companion.writeCollectionItems(newBody)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\SizerCompanions.py", line 331, in writeCollectionItems
+    if constr.params[0] == 'None':
+       ~~~~~~~~~~~~~^^^
+KeyError: 0
+
+=== Boa session start: 2026-05-05T18:38:04.974830 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 1138, in OnCloseWindow
+    self.refreshModel()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 443, in refreshModel
+    self.sizersView.saveCtrls([], module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\SizersView.py", line 84, in saveCtrls
+    DataView.saveCtrls(self, definedCtrls, module, collDeps=collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 119, in saveCtrls
+    InspectableObjectView.saveCtrls(self, definedCtrls, module, collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 421, in saveCtrls
+    collView.saveCtrls(module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\CollectionEdit.py", line 366, in saveCtrls
+    self.companion.writeCollectionItems(newBody)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\SizerCompanions.py", line 331, in writeCollectionItems
+    if constr.params[0] == 'None':
+       ~~~~~~~~~~~~~^^^
+KeyError: 0
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 1138, in OnCloseWindow
+    self.refreshModel()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 443, in refreshModel
+    self.sizersView.saveCtrls([], module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\SizersView.py", line 84, in saveCtrls
+    DataView.saveCtrls(self, definedCtrls, module, collDeps=collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 119, in saveCtrls
+    InspectableObjectView.saveCtrls(self, definedCtrls, module, collDeps)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 421, in saveCtrls
+    collView.saveCtrls(module)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\CollectionEdit.py", line 366, in saveCtrls
+    self.companion.writeCollectionItems(newBody)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\SizerCompanions.py", line 331, in writeCollectionItems
+    if constr.params[0] == 'None':
+       ~~~~~~~~~~~~~^^^
+KeyError: 0
+
+=== Boa session start: 2026-05-05T18:41:49.881593 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\SizerCompanions.py", line 257, in designTimeDefaults
+    int(srcRef)
+ValueError: invalid literal for int() with base 10: 'wx.Size(0, 0)'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 157, in showDesigner
+    sizersView.initialize()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 74, in initialize
+    self.initObjectsAndCompanions(objCol.creators, objCol, deps, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\SizersView.py", line 118, in initObjectsAndCompanions
+    DataView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 77, in initObjectsAndCompanions
+    InspectableObjectView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 139, in initObjectsAndCompanions
+    self.addCollView(ctrlName, collInit.method, False)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 272, in addCollView
+    collComp.applyDesignTimeDefaults(crt.params, crt.method)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\SizerCompanions.py", line 292, in applyDesignTimeDefaults
+    CollectionDTC.applyDesignTimeDefaults(self, params, method)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\BaseCompanions.py", line 1325, in applyDesignTimeDefaults
+    paramItems_list= list(self.designTimeDefaults(params, method).items())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\SizerCompanions.py", line 262, in designTimeDefaults
+    dtd[ctrlIdx] = self.designer.controllerView.getAllObjects()[srcRef]
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'wx.Size(0, 0)'
+
+=== Boa session start: 2026-05-05T18:43:03.352273 ===
+
+=== Boa session start: 2026-05-05T18:47:23.267694 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonEditorModels.py", line 128, in readDesignerMethod
+    inits, body, fins = res[:3]
+    ^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 3, got 2)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 115, in showDesigner
+    model.readComponents()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonEditorModels.py", line 339, in readComponents
+    self.objectCollections[oc] = self.readDesignerMethod(oc, codeBody)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonEditorModels.py", line 130, in readDesignerMethod
+    raise Exception(_('Collection body %s not in init, body, fin form') % meth)
+Exception: Collection body _init_coll_otherSizer_Items not in init, body, fin form
+Windows fatal exception: access violation
+
+Thread 0x00000d98 (most recent call first):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\EditorUtils.py", line 522 in run
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1075 in _bootstrap_inner
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1032 in _bootstrap
+
+Current thread 0x00000268 (most recent call first):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Utils.py", line 956 in wxPyExceptHook
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\boa.py", line 707 in _combined_excepthook
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\site-packages\wx\core.py", line 2254 in MainLoop
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\boa.py", line 793 in main
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\boa.py", line 806 in <module>
+
+=== Boa session start: 2026-05-05T18:59:21.861103 ===
+wx._core.wxAssertionError: C++ assertion ""item.IsOk()"" failed at ..\..\src\msw\treectrl.cpp(1356) in wxTreeCtrl::IsSelected(): invalid tree item
+
+The above exception was the direct cause of the following exception:
+
+SystemError: <class 'wx._core.TreeEvent'> returned a result with an exception set
+wx._core.wxAssertionError: C++ assertion "!m_var" failed at ..\..\src\msw\treectrl.cpp(126) in TempSetter::TempSetter(): variable shouldn't be already set
+
+The above exception was the direct cause of the following exception:
+
+SystemError: <class 'wx._core.TreeEvent'> returned a result with an exception set
+wx._core.wxAssertionError: C++ assertion ""item.IsOk()"" failed at ..\..\src\msw\treectrl.cpp(1356) in wxTreeCtrl::IsSelected(): invalid tree item
+
+The above exception was the direct cause of the following exception:
+
+SystemError: <class 'wx._core.TreeEvent'> returned a result with an exception set
+wx._core.wxAssertionError: C++ assertion "!m_var" failed at ..\..\src\msw\treectrl.cpp(126) in TempSetter::TempSetter(): variable shouldn't be already set
+
+The above exception was the direct cause of the following exception:
+
+SystemError: <class 'wx._core.TreeEvent'> returned a result with an exception set
+Traceback (most recent call last):
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\site-packages\wx\core.py", line 3425, in <lambda>
+    lambda event: event.callable(*event.args, **event.kw) )
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: wrapped C/C++ object of type Panel has been deleted
+
+=== Boa session start: 2026-05-05T19:23:44.698181 ===
+
+=== Boa session start: 2026-05-06T12:26:07.393143 ===
+
+=== Boa session start: 2026-05-06T19:06:56.453964 ===
+
+=== Boa session start: 2026-05-07T12:25:42.104388 ===
+
+=== Boa session start: 2026-05-07T12:44:58.937468 ===
+
+=== Boa session start: 2026-05-08T16:52:52.603515 ===
+
+=== Boa session start: 2026-05-08T16:57:36.704679 ===
+
+=== Boa session start: 2026-05-08T17:01:24.776755 ===
+
+=== Boa session start: 2026-05-08T17:04:15.237446 ===
+
+=== Boa session start: 2026-05-08T17:08:41.507884 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 124, in showDesigner
+    dataView.initialize()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 74, in initialize
+    self.initObjectsAndCompanions(objCol.creators, objCol, deps, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 77, in initObjectsAndCompanions
+    InspectableObjectView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 139, in initObjectsAndCompanions
+    self.addCollView(ctrlName, collInit.method, False)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 272, in addCollView
+    collComp.applyDesignTimeDefaults(crt.params, crt.method)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\BaseCompanions.py", line 1325, in applyDesignTimeDefaults
+    paramItems_list= list(self.designTimeDefaults(params, method).items())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\UtilCompanions.py", line 408, in designTimeDefaults
+    dtd[param] = self.eval(vals[param])
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\BaseCompanions.py", line 452, in eval
+    return PaletteMapping.evalCtrl(expr, self.designer.model.specialAttrs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\PaletteMapping.py", line 156, in evalCtrl
+    return eval(expr, globals(), localsDct)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <module>
+NameError: name 'wxID_WXFRAMEBALANCEMENUFILEITEMSOPENBASELINE' is not defined
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 124, in showDesigner
+    dataView.initialize()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 74, in initialize
+    self.initObjectsAndCompanions(objCol.creators, objCol, deps, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\DataView.py", line 77, in initObjectsAndCompanions
+    InspectableObjectView.initObjectsAndCompanions(self, creators, objColl, dependents, depLinks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 139, in initObjectsAndCompanions
+    self.addCollView(ctrlName, collInit.method, False)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 272, in addCollView
+    collComp.applyDesignTimeDefaults(crt.params, crt.method)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\BaseCompanions.py", line 1325, in applyDesignTimeDefaults
+    paramItems_list= list(self.designTimeDefaults(params, method).items())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\UtilCompanions.py", line 408, in designTimeDefaults
+    dtd[param] = self.eval(vals[param])
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\BaseCompanions.py", line 452, in eval
+    return PaletteMapping.evalCtrl(expr, self.designer.model.specialAttrs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\PaletteMapping.py", line 156, in evalCtrl
+    return eval(expr, globals(), localsDct)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <module>
+NameError: name 'wxID_WXFRAMEDATAINMENUFILEITEMSMANUALDATA' is not defined
+
+=== Boa session start: 2026-05-08T17:15:47.878656 ===
+
+=== Boa session start: 2026-05-08T17:17:21.277176 ===
+
+=== Boa session start: 2026-05-12T11:01:19.721517 ===
+
+=== Boa session start: 2026-05-12T11:20:15.865270 ===

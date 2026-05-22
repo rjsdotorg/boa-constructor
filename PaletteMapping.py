@@ -11,13 +11,11 @@
 # Licence:     GPL
 #----------------------------------------------------------------------
 
-""" Based on core support preferences this module initialises Companion, Model,
+"""Based on core support preferences this module initialises Companion, Model,
 View and Controller classes. It also executes all active Plug-ins.
 
 The namespace of this module is used to evalute code at Design-Time with evalCtrl.
-Hence the needed import * and execfile.
-
-"""
+Hence the needed import * and execfile."""
 
 # XXX This module should be renamed it's function has changed over time
 # XXX Maybe: BoaNamespace/DesignTimeNamespace

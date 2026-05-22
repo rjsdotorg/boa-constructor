@@ -1,6 +1,4 @@
-"""
-
-This script allows you to import, start and hook a DebugServer when
+"""This script allows you to import, start and hook a DebugServer when
 an uncaught exception occurs.
 
 Once the DebugServer has started, you may connect to it via 
@@ -10,9 +8,7 @@ To use, fix path_to_boa to point to your Boa installation, copy it anywhere
 on your sys.path (site-packages is recommended) and import this module.
 
 You may consider importing this module in sitecustomize.py (create it if needed)
-if you use it often.
-
-"""
+if you use it often."""
 
 path_to_boa = 'c:/path/to/boa'
 

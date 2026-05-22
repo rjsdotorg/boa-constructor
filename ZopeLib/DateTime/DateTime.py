@@ -82,7 +82,7 @@
 # attributions are listed in the accompanying credits file.
 #
 ##############################################################################
-"""Encapsulation of date/time values"""
+"""Encapsulation of date/time values."""
 
 __version__='$Revision$'[11:-2]
 

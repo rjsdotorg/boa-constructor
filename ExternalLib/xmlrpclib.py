@@ -85,8 +85,7 @@
 
 # TODO: sort out True/False/boolean issues for Python 2.3
 
-"""
-An XML-RPC client interface for Python.
+"""An XML-RPC client interface for Python.
 
 The marshalling and response parser code can also be used to
 implement XML-RPC servers.
@@ -127,8 +126,7 @@ Exported functions:
   dumps          Convert an argument tuple or a Fault instance to an XML-RPC
                  request (or response, if the methodresponse option is used).
   loads          Convert an XML-RPC packet to unmarshalled data plus a method
-                 name (None if not present).
-"""
+                 name (None if not present)."""
 
 import re, string, time, operator, sys
 

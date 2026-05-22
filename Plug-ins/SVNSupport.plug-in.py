@@ -9,7 +9,7 @@
 # Copyright:   (c) 2007 Riaan Booysen
 # Licence:     GPL
 #-----------------------------------------------------------------------------
-""" Explorer classes for SVN browsing and operations """
+"""Explorer classes for SVN browsing and operations."""
 
 import time, stat, os
 

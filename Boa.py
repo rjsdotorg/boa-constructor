@@ -13,9 +13,9 @@
 #----------------------------------------------------------------------
 #Boa:App:BoaApp
 
-""" The __main__ file for Boa.
+"""The __main__ file for Boa.
 
-Handles creation/initialisation of main objects and commandline arguments """
+Handles creation/initialisation of main objects and commandline arguments"""
 
 import sys, os, string, time, warnings, datetime
 import traceback

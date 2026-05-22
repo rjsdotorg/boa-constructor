@@ -1,4 +1,4 @@
-""" Plugin that adds a simple time tracking view to Application Models """
+"""Plugin that adds a simple time tracking view to Application Models."""
 
 import os
 import time

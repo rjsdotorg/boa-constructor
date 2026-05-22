@@ -9,9 +9,7 @@
 # Copyright:   (c) 1999 - 2007 Riaan Booysen
 # Licence:     GPL
 #----------------------------------------------------------------------
-"""
-
-Creation
+"""Creation
 
 self.<componentname> = <wxClassname>(<constr params>)
 
@@ -54,8 +52,7 @@ class frame1(wxFrame):
         self._init_utils()
 
     def __init__(self):
-        self._init_ctrls()
-"""
+        self._init_ctrls()"""
 
 import re, string
 

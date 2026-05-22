@@ -11,7 +11,7 @@
 #-----------------------------------------------------------------------------
 #Boa:Dialog:STCStyleEditDlg
 
-""" Style editor for the wxStyledTextCtrl.
+"""Style editor for the wxStyledTextCtrl.
 
 Reads in property style definitions from a config file.
 Modified styled can be saved (and optionally applied to a given list of STCs)
@@ -48,8 +48,7 @@ Currently the following languages are supported:
 Other languages can be added by just defining the above settings for them in
 the config file (if wxSTC implements them).
 
-Use the initSTC function to initialise your wxSTC from a config file.
-"""
+Use the initSTC function to initialise your wxSTC from a config file."""
 
 import os, sys, string, pprint, copy
 

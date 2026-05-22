@@ -11,8 +11,7 @@
 #-----------------------------------------------------------------------------
 #Boa:Dialog:STCPrintDlg
 
-"""
-"""
+""""""
 
 # XXX Currently forces stc rendering not to wrap lines, currently the page
 # XXX total calculations depend on exact number of lines

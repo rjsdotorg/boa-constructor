@@ -1,7 +1,5 @@
-"""
-Script that cleans up the Python documentation so that it can be used with the 
-wx.html.HTMLWindow class.
-"""
+"""Script that cleans up the Python documentation so that it can be used with the 
+wx.html.HTMLWindow class."""
 
 import os
 

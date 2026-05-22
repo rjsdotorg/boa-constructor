@@ -9,14 +9,12 @@
 # Copyright:   (c) 1999 - 2007 Riaan Booysen
 # Licence:     GPL
 #----------------------------------------------------------------------
-"""
-    Property editors provide a design time interface for the inspector to
+"""Property editors provide a design time interface for the inspector to
     examine and manipulate properties of controls.
 
     Some properties are live and also update the design time control,
     others only update the source and changes may only be seen when the
-    frame is reloaded or the control is recreated.
-"""
+    frame is reloaded or the control is recreated."""
 
 print('importing PropertyEditors')
 

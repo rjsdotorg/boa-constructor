@@ -10,7 +10,7 @@
 # Licence:     BSD
 #-----------------------------------------------------------------------------
 
-""" A Boa Constructor Plug-in that integrates the Bicycle Repair Man into the IDE.
+"""A Boa Constructor Plug-in that integrates the Bicycle Repair Man into the IDE.
 
 The refactoring actions are published under the Edit menu of Python Source Views,
 this is also the source's context menu.
@@ -18,9 +18,7 @@ this is also the source's context menu.
 There is a global refactoring context shared between all open modules.
 This is exposed as editor.brm_context.
 
-Also clearing the current context can be called from the Explorer menu.
-
-"""
+Also clearing the current context can be called from the Explorer menu."""
 
 import os, linecache, traceback
 from thread import start_new_thread
