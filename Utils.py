@@ -12,7 +12,7 @@
 # pyright: ignore
 # type: ignore
 
-import string, os, sys, glob, pprint, types, re, traceback
+import string, os, sys, glob, pprint, types, re, traceback, codecs
 from typing import Any, cast
 
 import wx
@@ -25,6 +25,20 @@ from html.parser import HTMLParser
 
 # Centralised i18n gettext compatible definition
 _ = wx.GetTranslation
+
+UTF8_BOM = codecs.BOM_UTF8.decode('utf-8')
+
+
+def stripUtf8Bom(data):
+    if isinstance(data, bytes):
+        if data.startswith(codecs.BOM_UTF8):
+            return data[len(codecs.BOM_UTF8):]
+        return data
+
+    if isinstance(data, str) and data.startswith(UTF8_BOM):
+        return data[len(UTF8_BOM):]
+
+    return data
 
 
 def toPyPath(filename):

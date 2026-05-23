@@ -12,7 +12,7 @@
 
 print('importing Models.PythonEditorModels')
 
-import os, sys, pprint, stat, types, tempfile, codecs
+import os, sys, pprint, stat, types, tempfile
 from _thread import start_new_thread
 from time import time, localtime, strftime
 from io import StringIO
@@ -1210,9 +1210,7 @@ def identifySource(source):
         The logic is a copy paste from above func """
     for line in source:
         if line:
-            line_start=line[:3]
-            if line_start == (codecs.BOM_UTF8):
-                line = line[len(codecs.BOM_UTF8):]
+            line = Utils.stripUtf8Bom(line)
 
             if line[0] != '#':
                 return ModuleModel, ''

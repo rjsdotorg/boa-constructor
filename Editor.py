@@ -17,7 +17,6 @@
 print('importing Editor')
 
 import os, sys, pprint
-import queue
 
 import wx
 
@@ -189,7 +188,8 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
         # Menus
         self.newMenu = newMenu
-        self.Bind(wx.EVT_MENU, self.OnOpen, id=EditorHelper.wxID_EDITOROPEN)
+        self.Bind(wx.EVT_MENU, self.OnOpenStd, id=EditorHelper.wxID_EDITOROPEN)
+        self.Bind(wx.EVT_MENU, self.OnOpen, id=EditorHelper.wxID_EDITOROPENBOA)
         self.Bind(wx.EVT_MENU, self.OnOpenRecent, id=EditorHelper.wxID_EDITOROPENRECENT)
         self.Bind(wx.EVT_MENU, self.OnExitBoa, id=EditorHelper.wxID_EDITOREXITBOA)
 
@@ -451,11 +451,15 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
             fileMenu.Append(wx.NewIdRef(), _('New'),
                   Utils.duplicateMenu(self.palette.palettePages[0].menu))
         Utils.appendMenuItem(fileMenu, EditorHelper.wxID_EDITOROPEN, _('Open'),
-              keyDefs['Open'], self.openBmp, _('Open a module'))
+              keyDefs['Open'], self.openBmp,
+              _('Open a file with the standard file dialog'))
+        Utils.appendMenuItem(fileMenu, EditorHelper.wxID_EDITOROPENBOA,
+              _('Open Boa files'), (), self.openBmp,
+              _('Open a module with Boa\'s transport-aware file dialog'))
         Utils.appendMenuItem(fileMenu, EditorHelper.wxID_EDITOROPENRECENT,
               _('Open recent files'), (), self.recentBmp)
 
-        addTool(self, self.toolBar, self.openBmp, _('Open a module'), self.OnOpen)
+        addTool(self, self.toolBar, self.openBmp, _('Open a file'), self.OnOpenStd)
 
         self.bbId = addTool(self, self.toolBar, self.backBmp, _('Browse back'), self.OnBrowseBack)
         self.bfId = addTool(self, self.toolBar, self.forwBmp, _('Browse forward'), self.OnBrowseForward)
@@ -997,6 +1001,38 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
             dlg.Destroy()
         return ''
 
+    def stdOpenFileDlg(self, filter='*.py', curdir='.', curfile=''):
+        if filter == '*.py':
+            filter = Preferences.exDefaultFilter
+
+        if curdir=='.' and getattr(Preferences, 'exOpenFromHere', 1):
+            curdir = self.getOpenFromHereDir()
+
+        wildcardMap = {
+            'BoaFiles': _('Python files') + ' (*.py;*.pyw)|*.py;*.pyw|' +
+                        _('All files') + ' (*.*)|*.*',
+            'StdFiles': _('Python files') + ' (*.py;*.pyw)|*.py;*.pyw|' +
+                        _('All files') + ' (*.*)|*.*',
+            'BoaIntFiles': _('Internal files') + ' (*.trace;*.stack;*.cycles;*.prof;*.cached;*.umllay;*.implay;*.brk)|*.trace;*.stack;*.cycles;*.prof;*.cached;*.umllay;*.implay;*.brk|' +
+                           _('All files') + ' (*.*)|*.*',
+            'ImageFiles': _('Image files') + ' (*.bmp;*.jpg;*.jpeg;*.png;*.gif;*.ico)|*.bmp;*.jpg;*.jpeg;*.png;*.gif;*.ico|' +
+                          _('All files') + ' (*.*)|*.*',
+            'AllFiles': _('All files') + ' (*.*)|*.*',
+        }
+        wildcard = wildcardMap.get(filter, filter)
+        if '|' not in wildcard:
+            wildcard = '%s (%s)|%s|%s (*.*)|*.*' % (
+                  _('Matching files'), filter, filter, _('All files'))
+
+        dlg = wx.FileDialog(self, _('Choose a file'), curdir, curfile,
+              wildcard, wx.FD_OPEN)
+        try:
+            if dlg.ShowModal() == wx.ID_OK:
+                return dlg.GetPath()
+        finally:
+            dlg.Destroy()
+        return ''
+
     def saveAsDlg(self, filename, filter = '*.py'):#, dont_pop=0):
         if filter == '*.py': filter = Preferences.exDefaultFilter
 
@@ -1172,6 +1208,18 @@ class EditorFrame(wx.Frame, Utils.FrameRestorerMixin):
 
     def OnOpen(self, event, curdir='.'):
         fn = self.openFileDlg(curdir=curdir)
+        if fn:
+            self.openOrGotoModule(fn)
+            self.explorerStore.recentFiles.add(fn)
+
+            if self.explorer:
+                tree = self.explorer.tree
+                node = tree.GetItemData(tree.GetSelection())
+                if node and node.protocol == 'recent.files':
+                    self.explorer.list.refreshCurrent()  # type: ignore[union-attr]
+
+    def OnOpenStd(self, event, curdir='.'):
+        fn = self.stdOpenFileDlg(curdir=curdir)
         if fn:
             self.openOrGotoModule(fn)
             self.explorerStore.recentFiles.add(fn)

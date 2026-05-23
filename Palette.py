@@ -265,7 +265,7 @@ class BoaFrame(wx.Frame, Utils.FrameRestorerMixin):
 
     def OnHelpToolClick(self, event):
         if self.componentSB.selection:
-            Help.showCtrlHelp(self.componentSB.selection[1].__name__)
+            Help.showCtrlHelp(self.componentSB.selection[1])
         else:
             Help.showMainHelp(self.paletteHelpItems['boa'])
 

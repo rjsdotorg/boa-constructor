@@ -1,5 +1,5 @@
 #
-# XML-RPC CLIENT LIBRARY
+# XML-RPC CLIENT LIBRARY xmlrpclib.py
 # $Id$
 #
 # an XML-RPC client interface for Python.
@@ -128,9 +128,7 @@ Exported functions:
   loads          Convert an XML-RPC packet to unmarshalled data plus a method
                  name (None if not present)."""
 
-import re, string, time, operator, sys
-
-from types import *
+import re, time, operator, sys
 
 # --------------------------------------------------------------------
 # Internal stuff
@@ -434,19 +432,15 @@ if not _bool_is_builtin:
 # XML parsers
 
 try:
-    # optional xmlrpclib accelerator.  for more information on this
-    # component, contact info@pythonware.com
-    import _xmlrpclib
-    FastParser = _xmlrpclib.Parser
-    FastUnmarshaller = _xmlrpclib.Unmarshaller
-except (AttributeError, ImportError):
-    FastParser = FastUnmarshaller = None
-
-try:
-    import _xmlrpclib
-    FastMarshaller = _xmlrpclib.Marshaller
-except (AttributeError, ImportError):
-    FastMarshaller = None
+    # Optional xmlrpclib accelerator. This module is typically unavailable on
+    # modern Python builds, so all fast-path symbols default to None.
+    import _xmlrpclib  # type: ignore[import-not-found]
+except ImportError:
+    FastParser = FastUnmarshaller = FastMarshaller = None
+else:
+    FastParser = getattr(_xmlrpclib, 'Parser', None)
+    FastUnmarshaller = getattr(_xmlrpclib, 'Unmarshaller', None)
+    FastMarshaller = getattr(_xmlrpclib, 'Marshaller', None)
 
 #
 # the SGMLOP parser is about 15x faster than Python's builtin
@@ -456,7 +450,7 @@ except (AttributeError, ImportError):
 #
 
 try:
-    import sgmlop
+    import sgmlop # type: ignore
     if not hasattr(sgmlop, "XMLParser"):
         raise ImportError
 except ImportError:

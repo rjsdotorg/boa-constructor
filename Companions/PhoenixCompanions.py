@@ -172,7 +172,6 @@ try:
     Plugins.registerComponents('Phoenix',
           (wx.propgrid.PropertyGrid, 'wx.propgrid.PropertyGrid', PhoenixWindowDTC),
           (wx.propgrid.PropertyGridManager, 'wx.propgrid.PropertyGridManager', PhoenixWindowDTC),
-          (wx.propgrid.PropertyGridCtrl, 'wx.propgrid.PropertyGridCtrl', PhoenixWindowDTC),
         )
 except (ImportError, AttributeError):
     pass

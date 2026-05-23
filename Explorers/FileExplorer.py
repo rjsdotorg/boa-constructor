@@ -504,10 +504,11 @@ class FileSysNode(ExplorerNodes.ExplorerNode):
                 with open(self.resourcepath, mode) as resource_file:
                     data = resource_file.read()
                 if isinstance(data, bytes):
-                    data = data.decode('utf-8')
+                    data = data.decode('utf-8-sig')
             else:
-                with open(self.resourcepath, mode, encoding='utf-8') as resource_file:
+                with open(self.resourcepath, mode, encoding='utf-8-sig') as resource_file:
                     data = resource_file.read()
+            data = Utils.stripUtf8Bom(data)
             self.updateStdAttrs()
             return data
         except IOError as error:
@@ -525,16 +526,16 @@ class FileSysNode(ExplorerNodes.ExplorerNode):
                   self.resourcepath)
             if 'b' in mode:
                 if isinstance(data, str):
-                    payload = data.encode('utf-8')
+                    payload = Utils.stripUtf8Bom(data).encode('utf-8')
                 else:
-                    payload = data
+                    payload = Utils.stripUtf8Bom(data)
                 with open(self.resourcepath, mode) as resource_file:
                     resource_file.write(payload)
             else:
                 if isinstance(data, bytes):
-                    payload = data.decode('utf-8')
+                    payload = data.decode('utf-8-sig')
                 else:
-                    payload = data
+                    payload = Utils.stripUtf8Bom(data)
                 with open(self.resourcepath, mode, encoding='utf-8') as resource_file:
                     resource_file.write(payload)
         except IOError as error:

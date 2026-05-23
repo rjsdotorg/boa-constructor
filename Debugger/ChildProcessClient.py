@@ -6,13 +6,7 @@ import xmlrpc.client
 
 import wx
 
-import Preferences, Utils
-from Utils import _
-import trace
-try:
-    from ExternalLib import xmlrpclib
-except ImportError:
-    import xmlrpclib
+import Preferences
 
 from Debugger.DebugClient import DebugClient, MultiThreadedDebugClient, \
      EmptyResponseError, DebuggerTask, EVT_DEBUGGER_START, \
@@ -23,51 +17,11 @@ KEEP_STREAMS_OPEN = 1
 USE_TCPWATCH = 0
 LOG_TRACEBACKS = 0
 
-
-class TransportWithAuth (xmlrpclib.Transport):
-    """Adds a proprietary but simple authentication header to the
-    RPC mechanism.  NOTE: this requires xmlrpclib version 1.0.0."""
-
-    def __init__(self, auth):
-        self._auth = auth
-
-    def send_user_agent(self, connection):
-        xmlrpclib.Transport.send_user_agent(self, connection)
-        connection.putheader("X-Auth", self._auth)
-
-    def parse_response(self, f, sock=None):
-        # read response from input file, and parse it
-        # If there was no response, raise a special exception.
-        got_data = 0
-
-        p, u = self.getparser()
-
-        while 1:
-            if sock:
-                response = sock.recv(1024)
-            else:
-                response = f.read(1024)
-            if not response:
-                break
-            else:
-                got_data = 1
-            if self.verbose:
-                print("body:", repr(response))
-            p.feed(response)
-
-        f.close()
-        if not got_data:
-            #raise EmptyResponseError, _('Empty response from debugger process')
-            raise Exception ('Empty response from debugger process', EmptyResponseError)
-
-        p.close()
-        return u.close()
-
 class UnknownError(Exception):
     pass
 
 def spawnChild(monitor, process, args=''):
-    """Returns an xmlrpclib.Server, a connection to an xml-rpc server,
+    """Returns an xmlrpc.client.ServerProxy, a connection to an xml-rpc server,
     and the input and error streams.
     """
     # Start ChildProcessServerStart.py in a new process.
@@ -170,7 +124,7 @@ def spawnChild(monitor, process, args=''):
             #     port, auth = line.strip().split()
             #     port = int(port.strip("0"))
 
-            port, auth = line.strip().split()
+            port, _auth_token = line.strip().split()
             port = int(port.strip("0"))
 
 
@@ -196,8 +150,7 @@ def spawnChild(monitor, process, args=''):
                 time.sleep(3)
                 port = new_port
 
-            # trans = TransportWithAuth(auth)   # orig
-            # server = xmlrpclib.Server(
+            # server = xmlrpc.client.ServerProxy(
             #     'http://127.0.0.1:%d' % port, trans)
 
             server = xmlrpc.client.ServerProxy('http://127.0.0.1:%d' % port)
@@ -217,7 +170,7 @@ def spawnChild(monitor, process, args=''):
 
 class ChildProcessClient(MultiThreadedDebugClient):
 
-    server = None       # An xmlrpclib.Server instance
+    server = None       # An xmlrpc.client.ServerProxy instance
     processId = 0
     process = None      # A wx.Process
     input_stream = None

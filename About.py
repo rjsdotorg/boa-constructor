@@ -15,7 +15,6 @@ from _thread import start_new_thread
 
 import wx
 import wx.html
-import wx.lib.wxpTag
 
 import __version__
 import Preferences, Utils
@@ -327,8 +326,9 @@ class AboutBoxSplash(AboutBoxMixin, wx.Frame):
         wx.Frame.__init__(self, size=wx.Size(418, 320), pos=(-1, -1),  # type: ignore[arg-type]
               id=wxID_ABOUTBOX, title='Boa Constructor', parent=prnt,
               name='AboutBoxSplash', style=wx.SIMPLE_BORDER)
-        self.progressId = wx.NewIdRef(count=1)
-        self.gaugePId = wx.NewIdRef(count=1)
+        # wxp HTML control creation expects numeric IDs, not WindowIDRef wrappers.
+        self.progressId = int(wx.NewIdRef(count=1))
+        self.gaugePId = int(wx.NewIdRef(count=1))
         self.SetBackgroundColour(wx.Colour(0x44, 0x88, 0xFF))  # wxColour(0x99, 0xcc, 0xff))
 
     def setPage(self):
@@ -340,12 +340,19 @@ class AboutBoxSplash(AboutBoxMixin, wx.Frame):
 
     def initCtrlNames(self):
         self.label = self.FindWindowById(self.progressId)
+        if self.label is None:
+            # Keep startup alive even if wxp controls were not materialized.
+            sys.stdout = sys.__stdout__
+            return
         self.label.SetBackgroundColour(wx.WHITE)
         # parentWidth = self.label.GetParent().GetClientSize().x
         # self.label.SetSize((parentWidth - 40, self.label.GetSize().y))
         ReqdWidth = self.label.GetSize().x
         self.label.SetSize((ReqdWidth - 40, self.label.GetSize().y))  # type: ignore[arg-type]
         gaugePrnt = self.FindWindowById(self.gaugePId)
+        if gaugePrnt is None:
+            sys.stdout = sys.__stdout__
+            return
         gaugePrnt.SetBackgroundColour(wx.BLACK)  # wx.Colour(0x99, 0xcc, 0xff))
         gaugeSze = gaugePrnt.GetClientSize()
         self.gauge = wx.Gauge(gaugePrnt, -1,
@@ -449,6 +456,9 @@ if __name__ == '__main__':
 
     # frame
     def updlbl(frame):
+        if not getattr(frame, 'label', None):
+            wx.CallLater(50, updlbl, frame)
+            return
         frame.label.SetLabel('Testing')
         frame.label.SetLabel('Testing 1')
         frame.label.SetLabel('Testing 2')

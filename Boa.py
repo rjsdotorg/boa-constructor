@@ -17,7 +17,7 @@
 
 Handles creation/initialisation of main objects and commandline arguments"""
 
-import sys, os, string, time, warnings, datetime
+import sys, os, string, time, datetime
 import traceback
 import faulthandler
 import importlib

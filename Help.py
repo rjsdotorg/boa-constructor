@@ -4,7 +4,7 @@
 #
 # Author:      Riaan Booysen
 #
-# Created:     1999, rewritten 2001
+# Created:     1999, rewritten 2026
 # RCS-ID:      $Id$
 # Copyright:   (c) 1999 - 2007 Riaan Booysen
 # Licence:     GPL
@@ -266,7 +266,36 @@ def showMainHelp(bookname):
 
 
 def showCtrlHelp(wxClass, method=''):
-    getHelpController().Display(wxClass).ExpandCurrAsWxClass(method)
+    ctrl_name = ''
+    terms = []
+
+    # Accept both class objects and legacy string names.
+    if hasattr(wxClass, '__name__'):
+        ctrl_name = wxClass.__name__
+        mod_name = getattr(wxClass, '__module__', '')
+        if mod_name and mod_name.startswith('wx'):
+            terms.append('%s.%s' % (mod_name, ctrl_name))
+        terms.append(ctrl_name)
+    else:
+        term = str(wxClass)
+        terms.append(term)
+        if '.' in term:
+            ctrl_name = term.split('.')[-1]
+            terms.append(ctrl_name)
+        else:
+            ctrl_name = term
+
+    # Keep order but remove duplicates.
+    dedup_terms = []
+    for term in terms:
+        if term and term not in dedup_terms:
+            dedup_terms.append(term)
+
+    anchor = method or ctrl_name
+    hc = getHelpController()
+    for term in dedup_terms:
+        hc.Display(term).ExpandCurrAsWxClass(anchor)
+        return
 
 def showHelp(filename):
     getHelpController().Display(filename)

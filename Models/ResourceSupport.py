@@ -349,11 +349,13 @@ def ConvertImgToPy(imgPath, editor):
         import sourceconst
         header = (sourceconst.defSig%{'modelIdent':'PyImgResource', 'main':''}).strip()
         if os.path.exists(pyResPath):
-            src = open(pyResPath, 'r').readlines()
+            with open(pyResPath, 'r', encoding='utf-8-sig') as resource_file:
+                src = resource_file.readlines()
             if not (src and src[0].startswith(header)):
                 src.insert(0, header+'\n')
                 src.insert(1, '\n')
-                open(pyResPath, 'w').writelines(src)
+                with open(pyResPath, 'w', encoding='utf-8') as resource_file:
+                    resource_file.writelines(src)
 
             m, c = editor.openOrGotoModule(pyResPath)
             c.OnReload(None)
