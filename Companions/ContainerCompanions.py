@@ -363,7 +363,7 @@ class BookCtrlPagesCDTC(CollectionDTC):
             else:
                 for constr in self.textConstrLst:
                     if Utils.srcRefFromCtrlName(compn.name) == constr.params['page']:
-                        constr.params['page'] == 'None'
+                        constr.params['page'] = 'None'
 
                 for tph in self.tempPlaceHolders:
                     if tph.ctrl == compn.control:
@@ -815,9 +815,9 @@ def BlankToolBitmap(width, height):
     bmp = wx.EmptyBitmap(width, height)
     dc = wx.MemoryDC()
     dc.SelectObject(bmp)
-    dc.SetBrush(wx.Brush(wx.RED, wx.BDIAGONAL_HATCH))
+    dc.SetBrush(wx.Brush(wx.RED, getattr(wx, 'CROSSDIAG_HATCH', 1)))
     dc.SetBackground(wx.Brush(wx.WHITE))
-    dc.SetPen(wx.Pen(wx.WHITE, 0, wx.TRANSPARENT))
+    dc.SetPen(wx.Pen(wx.WHITE, 0, getattr(wx, 'DOT', 2)))
     # dc.BeginDrawing()  #DEPRECATED
     dc.DrawRectangle(0, 0, width, height)
 

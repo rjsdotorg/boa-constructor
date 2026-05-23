@@ -1,5 +1,6 @@
 {
     "python.analysis.diagnosticMode": "workspace",
+    "python.analysis.typeCheckingMode": "off",
     "python.analysis.exclude": [
         "**/__pycache__/**",
         "Examples/**",
@@ -7,6 +8,8 @@
         "ZopeLib/zoa/**",
         "Docs/**",
         "locale/**",
-        "TestArea/**"
+        "TestArea/**", "**/node_modules", "**/.*",
+        "**/build", "**/dist", "**/venv", "**/.venv",
+        "**/env", "**/.env", "**/ENV", "**/.ENV"
     ]
 }
