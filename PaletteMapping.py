@@ -45,6 +45,7 @@ if Preferences.csWxPythonSupport:
     from Companions.ButtonCompanions import *
     from Companions.ListCompanions import *
     from Companions.GizmoCompanions import *
+    from Companions.PhoenixCompanions import *
     from Companions.LibCompanions import *
     if Utils.IsComEnabled():
         from Companions.ComCompanions import *
@@ -104,9 +105,9 @@ if Preferences.pluginPaths:
             continue
 
         pluginBasename = os.path.basename(pluginFilename)
-        
+
         print('executing %s'% os.path.splitext(pluginBasename)[0])
-        
+
         filename = pluginFilename.lower()
         try:
             #exec(open(pluginFilename,'r'))
