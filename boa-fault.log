@@ -63,3 +63,150 @@ Current thread 0x00001730 (most recent call first):
   File "C:\Users\rjs\Documents\GitHub\boa-constructor\Boa.py", line 806 in <module>
 
 === Boa session start: 2026-08-09T22:52:51.600549 ===
+
+=== Boa session start: 2026-08-10T09:23:31.502228 ===
+
+=== Boa session start: 2026-09-07T13:49:58.868999 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 143, in showDesigner
+    designer.refreshCtrl()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 399, in refreshCtrl
+    self.initObjectsAndCompanions(objCol.creators[1:], objCol, deps, depLnks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 129, in initObjectsAndCompanions
+    self.initObjProps(objColl.propertiesByName, constr.comp_name, constr,
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 206, in initObjProps
+    value = PaletteMapping.evalCtrl(prop.params[0],
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\PaletteMapping.py", line 155, in evalCtrl
+    return eval(expr, globals(), localsDct)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <module>
+NameError: name 'panel_sizer' is not defined
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 143, in showDesigner
+    designer.refreshCtrl()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 399, in refreshCtrl
+    self.initObjectsAndCompanions(objCol.creators[1:], objCol, deps, depLnks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 131, in initObjectsAndCompanions
+    self.initObjColls(objColl.collectionsByName, constr.comp_name, constr,
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 237, in initObjColls
+    self.addCollView(name, collInit.method, False)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 272, in addCollView
+    collComp.applyDesignTimeDefaults(crt.params, crt.method)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Companions\BaseCompanions.py", line 1350, in applyDesignTimeDefaults
+    getattr(self.control, method)(*args, **kwargs)
+wx._core.wxAssertionError: C++ assertion "(size_t)n == m_panes.GetCount()" failed at ..\..\src\common\statbar.cpp(160) in wxStatusBarBase::SetStatusWidths(): field number mismatch
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 144, in initObjCreator
+    ctrlClass = PaletteMapping.evalCtrl(constrPrs.class_name,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\PaletteMapping.py", line 155, in evalCtrl
+    return eval(expr, globals(), localsDct)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <module>
+NameError: name 'wxPyPlot' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 143, in showDesigner
+    designer.refreshCtrl()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 399, in refreshCtrl
+    self.initObjectsAndCompanions(objCol.creators[1:], objCol, deps, depLnks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 128, in initObjectsAndCompanions
+    self.initObjCreator(constr)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 529, in initObjCreator
+    InspectableObjectView.initObjCreator(self, constrPrs)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 147, in initObjCreator
+    raise DesignerError(_('%s is not defined on the Palette.')%constrPrs.class_name)
+Views.InspectableViews.DesignerError: wxPyPlot.PlotCanvas is not defined on the Palette.
+Windows fatal exception: access violation
+
+Thread 0x00002afc (most recent call first):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\EditorUtils.py", line 523 in run
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1075 in _bootstrap_inner
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1032 in _bootstrap
+
+Current thread 0x00000d90 (most recent call first):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Utils.py", line 1000 in wxPyExceptHook
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Boa.py", line 707 in _combined_excepthook
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\site-packages\wx\core.py", line 2254 in MainLoop
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Boa.py", line 793 in main
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Boa.py", line 806 in <module>
+
+=== Boa session start: 2026-09-07T14:13:31.847494 ===
+
+=== Boa session start: 2026-09-07T14:21:34.564052 ===
+
+=== Boa session start: 2026-09-07T14:25:40.418808 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\boa.py", line 628, in OnInit
+    inspector = Inspector.InspectorFrame(self.main)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Inspector.py", line 180, in __init__
+    cmpInf.append(self.paletteImages.Add(IS.load(filename)))
+                                         ^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\ImageStore.py", line 76, in load
+    return self.createImage(name, 'data')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\ImageStore.py", line 57, in createImage
+    stream = io.BytesIO(self.dataReg[filename])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: a bytes-like object is required, not 'str'
+
+=== Boa session start: 2026-09-07T14:27:45.785074 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 144, in initObjCreator
+    ctrlClass = PaletteMapping.evalCtrl(constrPrs.class_name,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\PaletteMapping.py", line 155, in evalCtrl
+    return eval(expr, globals(), localsDct)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <module>
+NameError: name 'wxPyPlot' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 78, in OnDesigner
+    self.showDesigner()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Models\wxPythonControllers.py", line 143, in showDesigner
+    designer.refreshCtrl()
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 399, in refreshCtrl
+    self.initObjectsAndCompanions(objCol.creators[1:], objCol, deps, depLnks)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 128, in initObjectsAndCompanions
+    self.initObjCreator(constr)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 529, in initObjCreator
+    InspectableObjectView.initObjCreator(self, constrPrs)
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\InspectableViews.py", line 147, in initObjCreator
+    raise DesignerError(_('%s is not defined on the Palette.')%constrPrs.class_name)
+Views.InspectableViews.DesignerError: wxPyPlot.PlotCanvas is not defined on the Palette.
+Windows fatal exception: access violation
+
+Thread 0x00001f90 (most recent call first):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\EditorUtils.py", line 523 in run
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1075 in _bootstrap_inner
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\threading.py", line 1032 in _bootstrap
+
+Current thread 0x000024fc (most recent call first):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Utils.py", line 1000 in wxPyExceptHook
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\boa.py", line 707 in _combined_excepthook
+  File "C:\Users\rjs\AppData\Local\Programs\Python\Python312\Lib\site-packages\wx\core.py", line 2254 in MainLoop
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\boa.py", line 793 in main
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\boa.py", line 806 in <module>
+
+=== Boa session start: 2026-09-07T14:28:33.921808 ===
+
+=== Boa session start: 2026-09-07T14:30:37.100810 ===
+Traceback (most recent call last):
+  File "C:\Users\rjs\Documents\GitHub\boa-constructor\Views\Designer.py", line 1680, in OnControlResize
+    dsgn.Refresh()
+RuntimeError: wrapped C/C++ object of type DesignerView has been deleted
+
+=== Boa session start: 2026-09-07T14:33:40.654029 ===

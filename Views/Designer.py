@@ -1632,6 +1632,10 @@ class DesignerControlsEvtHandler(wx.EvtHandler):
     def OnControlResize(self, event):
         """ Control is resized, emulate native wxWidgets layout behaviour """
         dsgn = self.designer
+        if dsgn is None or getattr(dsgn, 'destroying', False):
+            event.Skip()
+            return
+
         try:
             if dsgn.vetoResize:
                 return
@@ -1676,8 +1680,13 @@ class DesignerControlsEvtHandler(wx.EvtHandler):
                     dsgn.selection.positionUpdate()
 
         finally:
-            dsgn.forceResize = False
-            dsgn.Refresh()
+            try:
+                if not getattr(dsgn, 'destroying', False):
+                    dsgn.forceResize = False
+                    dsgn.Refresh()
+            except RuntimeError:
+                # A queued size event can outlive the native DesignerView.
+                pass
             event.Skip()
 
     def OnControlDClick(self, event):

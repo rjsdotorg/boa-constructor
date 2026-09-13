@@ -7,14 +7,14 @@ from PropEdit import PropertyEditors
 try:
     import wx.lib.plot
 except ImportError:
-    raise Plugins.SkipPlugin('PyPlot can not be imported (it probably requires Numeric)')
+    raise Plugins.SkipPlugin('WxPyPlot design support requires wx.lib.plot')
 
 class PlotCanvasDTC(BaseCompanions.WindowDTC):
     def __init__(self, name, designer, parent, ctrlClass):
         BaseCompanions.WindowDTC.__init__(self, name, designer, parent, ctrlClass)
 
     def writeImports(self):
-        return 'import wx.lib.plot'
+        return 'import wxPyPlot'
 
     def onlyPersistProps(self):
         return BaseCompanions.WindowDTC.onlyPersistProps(self) + \
@@ -24,12 +24,23 @@ class PlotCanvasDTC(BaseCompanions.WindowDTC):
         return BaseCompanions.WindowDTC.applyRunTime(self) + \
                ['EnableZoom']
 
+
+class WxPyPlotCanvas(wx.lib.plot.PlotCanvas):
+    """Design-time stand-in for projects importing wxPyPlot."""
+
+
+class wxPyPlot:
+    """Namespace used when Boa evaluates wxPyPlot source expressions."""
+
+    PlotCanvas = WxPyPlotCanvas
+
+
 #-------------------------------------------------------------------------------
 
 import Plugins
 
-Plugins.registerComponent('Library', wx.lib.plot.PlotCanvas,
-                          'wx.lib.plot.PlotCanvas', PlotCanvasDTC)
+Plugins.registerComponent('Library', WxPyPlotCanvas,
+                          'wxPyPlot.PlotCanvas', PlotCanvasDTC)
 
 def getPlotCanvasData():
     return \
@@ -45,4 +56,4 @@ h\xd5\xf7\xbdi6\xbeM\x10\xf5\xa5\xcc\x0eS\xed\x1a\x98\xf7\xaaO\t\x9e\xe6\xe3\
 $h?s_FY\t\x0e\x00\\\xfd\xdb\xf2\x03D\x18iL\x82$\x10\xc0\x00\x00\x00\x00IEND\
 \xaeB`\x82".encode('latin-1')
 
-Preferences.IS.registerImage('Images/Palette/wx.lib.plot.PlotCanvas.png', getPlotCanvasData())
+Preferences.IS.registerImage('Images/Palette/wxPyPlot.PlotCanvas.png', getPlotCanvasData())
