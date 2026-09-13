@@ -93,7 +93,6 @@ class PyDocHelpPage(wx.Panel):
         self.stxStatus.Bind(wx.EVT_LEFT_DOWN, self.OnStxstatusLeftDown)
 
     def __init__(self, parent, helpFrame):
-        print('creating new PyDocPage')
         self.runServer = False
         self.runServer = helpFrame.pdRunServer
 
@@ -291,7 +290,10 @@ def showCtrlHelp(wxClass, method=''):
         if term and term not in dedup_terms:
             dedup_terms.append(term)
 
-    anchor = method or ctrl_name
+    # Displaying a class term already opens its class page.  Only an explicit
+    # method request should add an HTML anchor; class-name anchors generally do
+    # not exist in wxPython's generated documentation.
+    anchor = method
     hc = getHelpController()
     for term in dedup_terms:
         hc.Display(term).ExpandCurrAsWxClass(anchor)
@@ -517,9 +519,11 @@ class wxHelpFrameEx:
 
     def ExpandCurrAsWxClass(self, anchor):
         self.navPages.SetSelection(0)
-        self.contentsTree.Expand(self.contentsTree.GetSelection())
+        selection = self.contentsTree.GetSelection()
+        if selection.IsOk():
+            self.contentsTree.Expand(selection)
         page = self.html.GetOpenedPage()
-        if anchor:
+        if anchor and page:
             self.controller.Display('%s#%s' % (page, str.lower(anchor)))
 
     def OnQuitHelp(self, event):

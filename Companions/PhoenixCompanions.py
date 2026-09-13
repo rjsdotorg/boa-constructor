@@ -18,6 +18,20 @@ class PhoenixWindowDTC(WindowDTC):
     """Generic companion for Phoenix controls with standard window constructor."""
 
 
+class PhoenixNoNameDTC(WindowDTC):
+    """Companion for Phoenix windows whose constructor omits ``name``."""
+
+    def constructor(self):
+        return {'Position': 'pos', 'Size': 'size', 'Style': 'style'}
+
+    def designTimeSource(self, position='wx.DefaultPosition', size='wx.DefaultSize'):
+        return {
+            'pos': position,
+            'size': size,
+            'style': '0',
+        }
+
+
 class PhoenixLabeledDTC(Constructors.LabeledInputConstr, WindowDTC):
     """Generic companion for controls that expect a label-like argument."""
 
@@ -29,6 +43,68 @@ class PhoenixLabeledDTC(Constructors.LabeledInputConstr, WindowDTC):
             'style': '0',
             'name': repr(self.name),
         }
+
+
+class RibbonPageDTC(PhoenixLabeledDTC):
+    def constructor(self):
+        return {'Label': 'label', 'Icon': 'icon', 'Style': 'style'}
+
+    def designTimeSource(self, position='wx.DefaultPosition', size='wx.DefaultSize'):
+        return {
+            'label': repr(self.name),
+            'icon': 'wx.NullBitmap',
+            'style': '0',
+        }
+
+
+class RibbonPanelDTC(PhoenixLabeledDTC):
+    def constructor(self):
+        return {
+            'Label': 'label',
+            'MinimisedIcon': 'minimised_icon',
+            'Position': 'pos',
+            'Size': 'size',
+            'Style': 'style',
+        }
+
+    def designTimeSource(self, position='wx.DefaultPosition', size='wx.DefaultSize'):
+        return {
+            'label': repr(self.name),
+            'minimised_icon': 'wx.NullBitmap',
+            'pos': position,
+            'size': size,
+            'style': 'wx.ribbon.RIBBON_PANEL_DEFAULT_STYLE',
+        }
+
+
+class AuiToolBarDTC(PhoenixNoNameDTC):
+    def constructor(self):
+        return {
+            'Position': 'position',
+            'Size': 'size',
+            'Style': 'style',
+        }
+
+    def designTimeSource(self, position='wx.DefaultPosition', size='wx.DefaultSize'):
+        return {
+            'position': position,
+            'size': size,
+            'style': 'wx.aui.AUI_TB_DEFAULT_STYLE',
+        }
+
+
+class WinIdWindowDTC(PhoenixWindowDTC):
+    windowIdName = 'winid'
+
+
+class InfoBarDTC(WindowDTC):
+    windowIdName = 'winid'
+
+    def constructor(self):
+        return {}
+
+    def designTimeSource(self, position='wx.DefaultPosition', size='wx.DefaultSize'):
+        return {}
 
 
 class CommandLinkButtonDTC(WindowDTC):
@@ -111,6 +187,30 @@ class NotificationMessageDTC(Constructors.EmptyConstr, UtilityDTC):
         return {}
 
 
+class PropertyGridManagerDTC(PhoenixWindowDTC):
+    """Keep PropertyGridManager valid by giving it an initial page.
+
+    wxWidgets 3.2.9 on MSW crashes in the propgrid DLL when a page-less
+    manager is destroyed.  Persist the page as normal generated source, but
+    only create it directly for a brand-new design-time control.  Reloaded
+    controls receive it when Boa replays their persisted properties.
+    """
+
+    defaultPageLabel = _('Properties')
+
+    def designTimeControl(self, position, size, args=None):
+        control = PhoenixWindowDTC.designTimeControl(
+            self, position, size, args)
+        if args is None and control.GetPageCount() == 0:
+            control.AddPage(self.defaultPageLabel)
+        return control
+
+    def persistConstr(self, className, params):
+        PhoenixWindowDTC.persistConstr(self, className, params)
+        self.persistProp('DefaultPage', 'AddPage',
+                         repr(self.defaultPageLabel))
+
+
 import Plugins
 
 Plugins.registerPalettePage('Phoenix', _('Phoenix'))
@@ -122,9 +222,9 @@ Plugins.registerPalettePage('Utilities (Data)', _('Utilities (Data)'))
 try:
     import wx.dataview
 
-    Plugins.registerComponents('Phoenix',
+    Plugins.registerComponents('Utilities (Data)',
           (wx.dataview.DataViewCtrl, 'wx.dataview.DataViewCtrl', PhoenixWindowDTC),
-          (wx.dataview.DataViewListCtrl, 'wx.dataview.DataViewListCtrl', PhoenixWindowDTC),
+          (wx.dataview.DataViewListCtrl, 'wx.dataview.DataViewListCtrl', PhoenixNoNameDTC),
           (wx.dataview.TreeListCtrl, 'wx.dataview.TreeListCtrl', PhoenixWindowDTC),
         )
 except ImportError:
@@ -133,24 +233,28 @@ except ImportError:
 try:
     import wx.adv
 
+    Plugins.registerComponent('Buttons',
+          wx.adv.CommandLinkButton,
+          'wx.adv.CommandLinkButton', CommandLinkButtonDTC)
     Plugins.registerComponents('Phoenix',
-          (wx.adv.CommandLinkButton, 'wx.adv.CommandLinkButton', CommandLinkButtonDTC),
           (wx.adv.HyperlinkCtrl, 'wx.adv.HyperlinkCtrl', PhoenixLabeledDTC),
-          (wx.adv.BitmapComboBox, 'wx.adv.BitmapComboBox', PhoenixWindowDTC),
           (wx.adv.TimePickerCtrl, 'wx.adv.TimePickerCtrl', PhoenixWindowDTC),
-          (wx.adv.BannerWindow, 'wx.adv.BannerWindow', PhoenixWindowDTC),
         )
+    Plugins.registerComponent('ListControls',
+          wx.adv.BitmapComboBox, 'wx.adv.BitmapComboBox', PhoenixWindowDTC)
+    Plugins.registerComponent('ContainersLayout',
+          wx.adv.BannerWindow, 'wx.adv.BannerWindow', WinIdWindowDTC)
 except (ImportError, AttributeError):
     pass
 
 try:
     import wx.ribbon
 
-    Plugins.registerComponents('Phoenix',
-          (wx.ribbon.RibbonBar, 'wx.ribbon.RibbonBar', PhoenixWindowDTC),
-          (wx.ribbon.RibbonPage, 'wx.ribbon.RibbonPage', PhoenixLabeledDTC),
-          (wx.ribbon.RibbonPanel, 'wx.ribbon.RibbonPanel', PhoenixLabeledDTC),
-          (wx.ribbon.RibbonButtonBar, 'wx.ribbon.RibbonButtonBar', PhoenixWindowDTC),
+    Plugins.registerComponents('ContainersLayout',
+          (wx.ribbon.RibbonBar, 'wx.ribbon.RibbonBar', PhoenixNoNameDTC),
+          (wx.ribbon.RibbonPage, 'wx.ribbon.RibbonPage', RibbonPageDTC),
+          (wx.ribbon.RibbonPanel, 'wx.ribbon.RibbonPanel', RibbonPanelDTC),
+          (wx.ribbon.RibbonButtonBar, 'wx.ribbon.RibbonButtonBar', PhoenixNoNameDTC),
         )
 except (ImportError, AttributeError):
     pass
@@ -158,10 +262,10 @@ except (ImportError, AttributeError):
 try:
     import wx.aui
 
-    Plugins.registerComponents('Phoenix',
-          (wx.aui.AuiNotebook, 'wx.aui.AuiNotebook', PhoenixWindowDTC),
-          (wx.aui.AuiToolBar, 'wx.aui.AuiToolBar', PhoenixWindowDTC),
-        )
+    Plugins.registerComponent('ContainersLayout',
+          wx.aui.AuiNotebook, 'wx.aui.AuiNotebook', PhoenixNoNameDTC)
+    Plugins.registerComponent('ContainersLayout',
+          wx.aui.AuiToolBar, 'wx.aui.AuiToolBar', AuiToolBarDTC)
     Plugins.registerComponent('Utilities (Data)', wx.aui.AuiManager, 'wx.aui.AuiManager', AuiManagerDTC)
 except (ImportError, AttributeError):
     pass
@@ -171,18 +275,21 @@ try:
 
     Plugins.registerComponents('Phoenix',
           (wx.propgrid.PropertyGrid, 'wx.propgrid.PropertyGrid', PhoenixWindowDTC),
-          (wx.propgrid.PropertyGridManager, 'wx.propgrid.PropertyGridManager', PhoenixWindowDTC),
+          (wx.propgrid.PropertyGridManager, 'wx.propgrid.PropertyGridManager', PropertyGridManagerDTC),
         )
 except (ImportError, AttributeError):
     pass
 
 try:
     Plugins.registerComponents('Phoenix',
-          (wx.ActivityIndicator, 'wx.ActivityIndicator', PhoenixWindowDTC),
+          (wx.ActivityIndicator, 'wx.ActivityIndicator', WinIdWindowDTC),
+        )
+    Plugins.registerComponents('ListControls',
           (wx.RearrangeList, 'wx.RearrangeList', RearrangeListDTC),
           (wx.RearrangeCtrl, 'wx.RearrangeCtrl', RearrangeCtrlDTC),
-          (wx.InfoBar, 'wx.InfoBar', PhoenixWindowDTC),
         )
+    Plugins.registerComponent('ContainersLayout',
+          wx.InfoBar, 'wx.InfoBar', InfoBarDTC)
 except AttributeError:
     pass
 

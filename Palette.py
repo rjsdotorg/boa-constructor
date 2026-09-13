@@ -18,6 +18,7 @@ import sys
 import wx
 import wx.html2
 import webbrowser
+from urllib.parse import quote_plus
 
 import PaletteStore
 import Help, Preferences, Utils, Plugins
@@ -145,9 +146,11 @@ class BoaFrame(wx.Frame, Utils.FrameRestorerMixin):
         self.paletteHelpItems = eval(conf.get('help', 'palettehelp'), {})
 
         self.toolBar.AddSeparator()
-        # Help for Boa, python and wxpython is integrated. No need for separate buttons now.
-        self.addTool('Images/Shared/Help', _('Boa or selected component help'),
+        self.addTool('Images/Shared/Help', _('Boa help'),
               _('Show help'), self.OnHelpToolClick)
+        self.addTool('Images/Shared/ContextHelp', _('Selected component help'),
+              _('Show help for the selected component'),
+              self.OnComponentHelpToolClick)
         self.addTool('Images/Shared/wxWinHelp', _('wxPython help'),
               _('Show help'), self.OnWxWinHelpToolClick)
         self.addTool('Images/Shared/PythonHelp', _('Python help'),
@@ -264,10 +267,25 @@ class BoaFrame(wx.Frame, Utils.FrameRestorerMixin):
         self.editor.restore()
 
     def OnHelpToolClick(self, event):
-        if self.componentSB.selection:
-            Help.showCtrlHelp(self.componentSB.selection[1])
+        Help.showMainHelp(self.paletteHelpItems['boa'])
+        event.Skip()
+
+    def OnComponentHelpToolClick(self, event):
+        if not self.componentSB.selection:
+            wx.MessageBox(_('Select a component first.'),
+                          _('Selected component help'),
+                          wx.OK | wx.ICON_INFORMATION, self)
+            event.Skip()
+            return
+
+        componentName = self.componentSB.selection[0]
+        if componentName.startswith('wx.'):
+            url = 'https://docs.wxpython.org/%s.html' % componentName
         else:
-            Help.showMainHelp(self.paletteHelpItems['boa'])
+            url = ('https://docs.wxpython.org/search.html?q=%s' %
+                   quote_plus(componentName))
+        webbrowser.open(url, new=2)
+        event.Skip()
 
     def OnWxWinHelpToolClick(self, event):
         webbrowser.open('https://docs.wxpython.org/index.html', new=2)

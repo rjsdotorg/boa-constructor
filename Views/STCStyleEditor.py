@@ -939,7 +939,7 @@ class STCStyleEditDlg(wx.Dialog):
               style=wx.TE_MULTILINE | wx.OK | wx.CANCEL | wx.CENTRE)
         try:
             if dlg.ShowModal() == wx.ID_OK:
-                answer = eval(dlg.GetValue(), stc.__dict__)
+                answer = eval(dlg.GetValue(), wx.stc.__dict__)
                 assert isinstance(answer, type({})), _('Not a valid dictionary')
                 oldDefs = self.commonDefs
                 self.commonDefs = answer
